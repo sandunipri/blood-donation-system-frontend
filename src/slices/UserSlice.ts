@@ -18,10 +18,10 @@ export const registerUser = createAsyncThunk(
     async (data: UserData, { rejectWithValue }) => {
         try {
             console.log("Registering user with data:", data);
-            const response = await backendApi.post("/user/register", data); // send JSON
+            const response = await backendApi.post("/user/register", data);
             const message = response.data.message;
             alert(message);
-            return response.data; // Make sure to return something if your reducer needs it
+            return response.data;
         } catch (err: any) {
             console.error("Registration failed:", err.response?.data);
             return rejectWithValue(err.response?.data?.error || "Registration failed");
