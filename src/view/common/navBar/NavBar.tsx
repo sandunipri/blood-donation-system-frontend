@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import {FaEnvelope, FaFacebookF, FaInstagram, FaTwitter} from "react-icons/fa";
-// import Image from 'next/image';
+import bgImage from "../../../assets/images/navbar/blood-g4e28dcb97_1920.jpg";
 
 
 export function NavBar() {
@@ -9,7 +9,8 @@ export function NavBar() {
             <div className=" p-2 font-sans  flex justify-between items-center shadow-md">
                 <div className="flex items-center  ">
                     <div>
-                        <img src="/src/assets/images/navbar/img.png" alt="Logo" className="h-20 w-20 object-contain rounded-full"/>
+                        <img src="/src/assets/images/navbar/img.png" alt="Logo"
+                             className="h-20 w-20 object-contain rounded-full"/>
                     </div>
                     <div>
                         <h1 className="text-2xl font-bold text-gray-800">BLOOD BANKING AND DONATION IN SRI LANKA</h1>
@@ -31,21 +32,21 @@ export function NavBar() {
 
 
             </div>
-                <hr className="border-t-2 border-gray-300 " />
+            <hr className="border-t-2 border-gray-300 "/>
 
             <div className="flex justify-between items-center px-6 py-2 bg-gray-200 text-lg">
                 <div className="flex space-x-4 text-blue-600 ">
                     <a href="mailto:info@example.com" className="hover:text-blue-600">
-                        <FaEnvelope />
+                        <FaEnvelope/>
                     </a>
                     <a href="https://twitter.com" target="_blank" className="hover:text-blue-400">
-                        <FaTwitter />
+                        <FaTwitter/>
                     </a>
                     <a href="https://facebook.com" target="_blank" className="hover:text-blue-700">
-                        <FaFacebookF />
+                        <FaFacebookF/>
                     </a>
                     <a href="https://instagram.com" target="_blank" className="hover:text-pink-500">
-                        <FaInstagram />
+                        <FaInstagram/>
                     </a>
                 </div>
                 <div className="flex space-x-4 text-blue-600">
@@ -55,11 +56,8 @@ export function NavBar() {
                     <span className="hover:underline cursor-pointer">BLOOD BANKING AND DONATION</span>
                 </div>
             </div>
-            <nav className="navbar bg-red-800 text-white p-4 flex justify-between items-center shadow-lg">
+            {/*         <nav className="navbar bg-red-800 text-white p-4 flex justify-between items-center shadow-lg">
                 <div className="container mx-auto flex justify-between items-center">
-                    <div className="logo text-xl font-bold">
-                        MyApp
-                    </div>
                     <div className="flex items-center space-x-6">
                         <ul className="flex space-x-4">
                             <li className="hover:text-gray-400"><Link to="/">Home</Link></li>
@@ -71,7 +69,24 @@ export function NavBar() {
                     </div>
 
                 </div>
-            </nav>
+            </nav>*/}
+
+            <div
+                className="relative w-full h-[50vh] bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${bgImage})` }}
+            >
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+
+                <div className="absolute bottom-0 left-0 w-100 h-24 flex items-center px-8 z-10">
+                    <div className="absolute inset-0 bg-gray-600 opacity-50"></div>
+
+                    <h2 className="relative text-3xl md:text-4xl font-bold tracking-wide text-white drop-shadow-lg">
+                        Patients
+                    </h2>
+                </div>
+            </div>
+
+            ,
         </div>
     );
 }

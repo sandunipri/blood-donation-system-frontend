@@ -1,7 +1,43 @@
 import {Link, useNavigate} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import type {UserData} from "../../../model/UserData.ts";
+import {backendApi} from "../../../api.ts";
+import {getUserFromToken} from "../../../auth/auth.ts";
+
+type FormData = {
+    email: string;
+    password: string;
+}
 
 export function Login() {
     const navigate = useNavigate();
+    const { register, handleSubmit } = useForm<FormData>();
+
+    const authenticateUser = async (data :FormData) => {
+        try {
+            const userCredentials = {
+                email: data.email,
+                password: data.password
+            };
+            const response = await backendApi.post('/auth/login', userCredentials);
+            const accessToken = response.data.accessToken;
+            const refreshToken = response.data.refreshToken;
+
+            localStorage.setItem('token', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+
+            const user : UserData = getUserFromToken(accessToken);
+            localStorage.setItem('username', user.email as string);
+            localStorage.setItem('role', user.role as string);
+
+            alert("Successfully logged in!");
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            alert("Login failed");
+        }
+        };
+
 
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -12,13 +48,14 @@ export function Login() {
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form action="#" method="POST" className="space-y-6">
+                <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit(authenticateUser)}>
                     <div>
                         <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                             Email address
                         </label>
                         <div className="mt-2">
                             <input
+                                {...register("email")}
                                 id="email"
                                 name="email"
                                 type="email"
@@ -42,6 +79,7 @@ export function Login() {
                         </div>
                         <div className="mt-2">
                             <input
+                                {...register("password")}
                                 id="password"
                                 name="password"
                                 type="password"

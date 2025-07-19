@@ -6,13 +6,11 @@ import {registerUser} from "../../../slices/UserSlice.ts";
 import {useForm} from "react-hook-form";
 import type {UserData} from "../../../model/UserData.ts";
 
-type UserProps = {
-    data : UserData
-}
 
-export function Register({data}: UserProps) {
+export function Register() {
 
     const dispatch = useDispatch<AppDispatch>();
+
     const { handleSubmit, register } = useForm<UserData>();
 
     const user = useSelector((state:RootState)=> state.user);

@@ -30,6 +30,21 @@ export const registerUser = createAsyncThunk(
 
 )
 
+export const loginUser = createAsyncThunk(
+    'user/login',
+    async (data : UserData,) => {
+        try {
+            console.log("Logging in user with data:", data);
+            const response = await backendApi.post("/user/login", data);
+            const message = response.data.message;
+            alert(message);
+        }catch (error){
+            console.error("Login failed:", error);
+        }
+    }
+)
+
+
 const userSlice = createSlice({
     name : 'user',
     initialState : initialState,
