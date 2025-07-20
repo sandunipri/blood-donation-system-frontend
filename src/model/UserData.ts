@@ -6,8 +6,8 @@ export interface UserData {
     nic: string;
     phone: string;
     bloodGroup?: string;
-    role: 'donor' | 'recipient' | 'hospital';
-    gender: 'Male' | 'Female' | 'Other';
+    role: 'donor' | 'recipient';
+    gender: 'Male' | 'Female';
     dateOfBirth: string;
     address: string;
 }

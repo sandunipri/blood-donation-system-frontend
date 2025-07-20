@@ -14,13 +14,12 @@ const initialState: userState = {
 }
 
 export const registerUser = createAsyncThunk(
-    'user/register',
+    'auth/register',
     async (data: UserData, { rejectWithValue }) => {
         try {
             console.log("Registering user with data:", data);
-            const response = await backendApi.post("/user/register", data);
-            const message = response.data.message;
-            alert(message);
+            const response = await backendApi.post("/auth/register", data);
+            console.log("Registration response:", response.data);
             return response.data;
         } catch (err: any) {
             console.error("Registration failed:", err.response?.data);
@@ -30,23 +29,23 @@ export const registerUser = createAsyncThunk(
 
 )
 
-export const loginUser = createAsyncThunk(
-    'user/login',
+/*export const loginUser = createAsyncThunk(
+    'auth/login',
     async (data : UserData,) => {
         try {
             console.log("Logging in user with data:", data);
-            const response = await backendApi.post("/user/login", data);
+            const response = await backendApi.post("/auth/login", data);
             const message = response.data.message;
             alert(message);
         }catch (error){
             console.error("Login failed:", error);
         }
     }
-)
+)*/
 
 
 const userSlice = createSlice({
-    name : 'user',
+    name : 'auth',
     initialState : initialState,
     reducers : {},
     extraReducers : (builder) => {
@@ -58,7 +57,7 @@ const userSlice = createSlice({
             state.error = null;
         });
         builder.addCase(registerUser.rejected, (state, action) => {
-                state.error = action.error.message;
+            state.error = action.payload as string;
         });
     }
 })

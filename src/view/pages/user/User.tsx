@@ -1,7 +1,4 @@
-
-
-
-export function User() {
+ export function User() {
     return (
         <div>
             im back

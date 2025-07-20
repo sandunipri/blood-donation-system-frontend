@@ -1,9 +1,23 @@
 import {Link} from "react-router-dom";
 import {FaEnvelope, FaFacebookF, FaInstagram, FaTwitter} from "react-icons/fa";
 import bgImage from "../../../assets/images/navbar/blood-g4e28dcb97_1920.jpg";
+import {useEffect, useState} from "react";
 
 
 export function NavBar() {
+
+    const [userEmail, setUsername] = useState<string|null>(null);
+    const [role,setrole] = useState<string|null>(null)
+
+
+    useEffect(()=>{
+        const storageUserName= localStorage.getItem("username")
+        const storageRole = localStorage.getItem("role")
+        setUsername(storageUserName)
+        setrole(storageRole)
+    },[])
+
+
     return (
         <div>
             <div className=" p-2 font-sans  flex justify-between items-center shadow-md">
@@ -19,14 +33,27 @@ export function NavBar() {
 
                 <div className="flex items-center space-x-4 text-gray-800">
                     <div>
-                        <button className="bg-red-900 w-30 h-10 rounded-3xl text-white">
-                            <Link to="/login"> SIGN IN </Link>
-                        </button>
+                        {userEmail ? (
+                            <button className="bg-red-900 w-30 h-10 rounded-3xl text-white"
+                            onClick={
+                                () => {
+                                    localStorage.removeItem("username");
+                                    localStorage.removeItem("role");
+                                    localStorage.removeItem("token");
+                                    localStorage.removeItem("refreshToken");
+                                }
+                            }>
+                                <Link to="/login">LOG OUT </Link>
+                            </button>
+                        ):(
+                            <button className="bg-red-900 w-30 h-10 rounded-3xl text-white">
+                                <Link to="/login"> SIGN IN </Link>
+                            </button>
+                        )}
+
                     </div>
                     <div>
-                        <button className="bg-red-900 w-30 h-10 rounded-3xl text-white">
-                            <Link to="/register"> REGISTER </Link>
-                        </button>
+
                     </div>
                 </div>
 
@@ -50,26 +77,45 @@ export function NavBar() {
                     </a>
                 </div>
                 <div className="flex space-x-4 text-blue-600">
-                    <span className="hover:underline cursor-pointer">EDUCATION</span>
-                    <span className="font-bold hover:underline cursor-pointer">PATIENTS</span>
-                    <span className="hover:underline cursor-pointer">BLOOD BASICS</span>
-                    <span className="hover:underline cursor-pointer">BLOOD BANKING AND DONATION</span>
+                    <ul className="flex space-x-4">
+           {/*             {
+                            role === "admin" && (
+                                <>
+                                    <li><Link to="/admin/donors" className="hover:underline">DONORS</Link></li>
+                                    <li><Link to="/admin/hospitals" className="hover:underline">HOSPITALS</Link></li>
+                                    <li><Link to="/admin/patients" className="font-bold hover:underline">PATIENTS</Link></li>
+                                    <li><Link to="/admin/reports" className="hover:underline">REPORTS</Link></li>
+                                    <li><Link to="/admin/settings" className="hover:underline">SETTINGS</Link></li>
+                                </>
+                            )
+                        }*/}
+                        {
+                            role === "donor" && (
+                                <>
+                                    <li><Link to="/donor/profile" className="hover:underline">PROFILE</Link></li>
+                                    <li><Link to="/donor/contacts" className="hover:underline">CONTACTS</Link></li>
+                                    <li><Link to="/donor/donors" className="font-bold hover:underline">DONORS</Link></li>
+                                    <li><Link to="/donor/blood-basics" className="hover:underline">BLOOD BASICS</Link></li>
+                                    <li><Link to="/donor/blood-bank" className="hover:underline">BLOOD BANKING AND DONATION</Link></li>
+                                </>
+                            )
+                        }
+                        {
+                            role === "Hospital" && (
+                                <>
+                                    <li><Link to="/hospital/about" className="hover:underline">ABOUT</Link></li>
+                                    <li><Link to="/hospital/contacts" className="hover:underline">CONTACTS</Link></li>
+                                    <li><Link to="/hospital/patients" className="font-bold hover:underline">PATIENTS</Link></li>
+                                    <li><Link to="/hospital/blood-basics" className="hover:underline">BLOOD BASICS</Link></li>
+                                    <li><Link to="/hospital/blood-bank" className="hover:underline">BLOOD BANKING AND DONATION</Link></li>
+                                </>
+                            )
+                        }
+                    </ul >
+
+
                 </div>
             </div>
-            {/*         <nav className="navbar bg-red-800 text-white p-4 flex justify-between items-center shadow-lg">
-                <div className="container mx-auto flex justify-between items-center">
-                    <div className="flex items-center space-x-6">
-                        <ul className="flex space-x-4">
-                            <li className="hover:text-gray-400"><Link to="/">Home</Link></li>
-                            <li className="hover:text-gray-400"><Link to="/about">About</Link></li>
-                            <li className="hover:text-gray-400"><Link to="/contact">Contact</Link></li>
-                            <li className="hover:text-gray-400"><Link to="/shoppingCart">ShoppingCart</Link></li>
-                        </ul>
-
-                    </div>
-
-                </div>
-            </nav>*/}
 
             <div
                 className="relative w-full h-[50vh] bg-cover bg-center bg-no-repeat"

@@ -18,6 +18,7 @@ export function Register() {
     const  onSubmit = (data : UserData) => {
         dispatch(registerUser(data));
         console.log("User registered:", user);
+        navigate("/login");
     }
 
     const navigate = useNavigate();
@@ -111,6 +112,7 @@ export function Register() {
                             name="role"
                             className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-red-900"
                         >
+                            <option value="">Select Role</option>
                             <option value="donor">Donor</option>
                             <option value="recipient">Recipient</option>
                             <option value="hospital">Hospital</option>
