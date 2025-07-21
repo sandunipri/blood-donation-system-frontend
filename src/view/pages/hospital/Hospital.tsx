@@ -1,32 +1,27 @@
 import { useState } from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "../../../store/Store.ts";
+import {useForm} from "react-hook-form";
+import type {HospitalData} from "../../../model/HospitalData.ts";
+import {saveHospital} from "../../../slices/HospitalSlice.ts";
 
 export function Hospital() {
     const [showModal, setShowModal] = useState(false);
 
-    const hospitals = [
-        {
-            id: 1,
-            name: "National Hospital",
-            location: "Colombo",
-            contact: "011-1234567",
-            bloodStock: {
-                A_Positive: 10,
-                B_Positive: 5,
-                O_Negative: 2
-            }
-        },
-        {
-            id: 2,
-            name: "Kandy General Hospital",
-            location: "Kandy",
-            contact: "081-7654321",
-            bloodStock: {
-                A_Positive: 3,
-                B_Positive: 7,
-                O_Negative: 4
-            }
-        }
-    ];
+    const dispatch = useDispatch<AppDispatch>();
+    const { handleSubmit ,register } = useForm<HospitalData>();
+
+    const hospital = useSelector((state:RootState) => state.hospital);
+
+    const onSubmit = (data: HospitalData) => {
+        dispatch(saveHospital(data));
+        console.log("Hospital data saved:", hospital);
+        alert(
+            `Hospital ${data.name} added successfully!`
+        )
+        setShowModal(false);
+
+    }
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
@@ -53,26 +48,6 @@ export function Hospital() {
                             <th className="px-4 py-2 border">Actions</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        {hospitals.map((hospital, index) => (
-                            <tr key={hospital.id} className="text-gray-800">
-                                <td className="px-4 py-2 border">{index + 1}</td>
-                                <td className="px-4 py-2 border">{hospital.name}</td>
-                                <td className="px-4 py-2 border">{hospital.location}</td>
-                                <td className="px-4 py-2 border">{hospital.contact}</td>
-                                <td className="px-4 py-2 border text-sm">
-                                    {Object.entries(hospital.bloodStock).map(([type, count]) => (
-                                        <div key={type}>{type.replace("_", "+")}: {count}</div>
-                                    ))}
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    <button className="text-sm text-red-900 border border-red-900 px-3 py-1 rounded hover:bg-red-900 hover:text-white transition">
-                                        Update Stock
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -80,25 +55,85 @@ export function Hospital() {
             {/* Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
+                    <div className="bg-white p-6 rounded shadow-md w-full max-w-2xl">
                         <h3 className="text-lg font-bold mb-4">Add Hospital</h3>
-                        <form className="space-y-4">
+                        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} >
                             <input
+                                {...register("name")}
                                 type="text"
+                                name="name"
                                 placeholder="Hospital Name"
                                 className="w-full border border-gray-300 rounded px-3 py-2"
+                                required
                             />
                             <input
+                                {...register("location")}
                                 type="text"
+                                name="location"
                                 placeholder="Location"
                                 className="w-full border border-gray-300 rounded px-3 py-2"
+                                required
                             />
                             <input
+                                {...register("contact")}
                                 type="text"
+                                name="contact"
                                 placeholder="Contact Number"
                                 className="w-full border border-gray-300 rounded px-3 py-2"
+                                required
                             />
-                            <div className="flex justify-end space-x-2">
+                            <input
+                                {...register("email")}
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                                required
+                            />
+
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                                    Blood Stock
+                                </label>
+
+                                    <div className="flex items-center space-x-2 mb-2">
+                                        <select
+                                            {...register("bloodStock.0.bloodType")}
+                                            className="border border-gray-300 rounded px-2 py-1 w-32"
+                                        >
+                                            <option value="">Select Type</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                        <input
+                                            {...register("bloodStock.0.quantity", { valueAsNumber: true })}
+                                            type="number"
+                                            min={0}
+                                            placeholder="Quantity"
+                                            className="border border-gray-300 rounded px-2 py-1 w-24"
+                                        />
+                                        <button
+                                            type="button"
+                                            className="text-sm text-red-600 hover:underline"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                <button
+                                    type="button"
+                                    className="text-sm text-blue-600 hover:underline mt-1"
+                                >
+                                    + Add Blood Type
+                                </button>
+                            </div>
+
+                            <div className="flex justify-end space-x-2 pt-4">
                                 <button
                                     type="button"
                                     onClick={() => setShowModal(false)}
@@ -115,8 +150,7 @@ export function Hospital() {
                             </div>
                         </form>
                     </div>
-                </div>
-            )}
+                </div>            )}
         </div>
     );
 }
