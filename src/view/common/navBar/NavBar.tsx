@@ -84,7 +84,7 @@ export function NavBar() {
                                     <li><Link to="/admin/donors" className="hover:underline">DONORS</Link></li>
                                     <li><Link to="/admin/hospitals" className="hover:underline">HOSPITALS</Link></li>
                                     <li><Link to="/admin/patients" className="font-bold hover:underline">PATIENTS</Link></li>
-                                    <li><Link to="/admin/reports" className="hover:underline">REPORTS</Link></li>
+                                    <li><Link to="/notification" className="hover:underline">NOTIFICATIONS</Link></li>
                                     <li><Link to="/admin/settings" className="hover:underline">SETTINGS</Link></li>
                                 </>
                             )
@@ -103,11 +103,11 @@ export function NavBar() {
                         {
                             role === "recipient" && (
                                 <>
-                                    <li><Link to="/hospital/about" className="hover:underline">ABOUT</Link></li>
-                                    <li><Link to="/hospital/contacts" className="hover:underline">CONTACTS</Link></li>
-                                    <li><Link to="/hospital/request" className="hover:underline">REQUEST</Link></li>
-                                    <li><Link to="/hospital/blood-basics" className="hover:underline">BLOOD BASICS</Link></li>
-                                    <li><Link to="/hospital/blood-bank" className="hover:underline">BLOOD BANKING AND DONATION</Link></li>
+                                    <li><Link to="/recipient/about" className="hover:underline">ABOUT</Link></li>
+                                    <li><Link to="/recipient/contacts" className="hover:underline">CONTACTS</Link></li>
+                                    <li><Link to="/request" className="hover:underline">REQUEST</Link></li>
+                                    <li><Link to="/recipient/blood-basics" className="hover:underline">BLOOD BASICS</Link></li>
+                                    <li><Link to="/recipient/blood-bank" className="hover:underline">BLOOD BANKING AND DONATION</Link></li>
                                 </>
                             )
                         }

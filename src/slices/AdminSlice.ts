@@ -26,6 +26,9 @@ export const registerAdmin = createAsyncThunk(
         }
     }
 )
+
+
+
 const adminSlice = createSlice({
     name : 'auth',
     initialState : initialState,
