@@ -1,12 +1,23 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../../store/Store.ts";
-import {useForm} from "react-hook-form";
+import {useFieldArray, useForm} from "react-hook-form";
 import type {HospitalData} from "../../../model/HospitalData.ts";
 import {getAllHospitals, saveHospital} from "../../../slices/HospitalSlice.ts";
 
 export function Hospital() {
     const [showModal, setShowModal] = useState(false);
+
+    const {handleSubmit, register, control , reset} = useForm<HospitalData>({
+        defaultValues:{
+            bloodStock:[{bloodType: "" , quantity:0}]
+        }
+    });
+
+    const {fields, append , remove} = useFieldArray({
+        control,
+        name:"bloodStock"
+    })
 
     const dispatch = useDispatch<AppDispatch>()
 
@@ -14,12 +25,11 @@ export function Hospital() {
         dispatch(getAllHospitals());
     }, [dispatch]);
 
-    const {handleSubmit, register} = useForm<HospitalData>();
-
     const hospitals = useSelector((state: RootState) => state.hospital.list);
 
     const onSubmit = (data: HospitalData) => {
         dispatch(saveHospital(data));
+        reset();
         console.log("Hospital data saved:", hospitals);
         alert(
             `Hospital ${data.name} added successfully!`
@@ -64,7 +74,8 @@ export function Hospital() {
                                         <div key={i}>{stock.bloodType}: {stock.quantity}</div>
                                     ))}
                                 </td>
-                                <td className="px-4 py-2 border">Actions here</td>
+                                <td className="px-4 py-2 border">
+                                    Actions here</td>
                             </tr>
                         ))}
                         </tbody>
@@ -74,8 +85,8 @@ export function Hospital() {
 
             {/* Modal */}
             {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded shadow-md w-full max-w-2xl">
+                <div className="fixed bg-transparent  flex justify-center items-center inset-0 z-40">
+                    <div className="bg-gray-100 p-6 rounded shadow-md w-full max-w-2xl">
                         <h3 className="text-lg font-bold mb-4">Add Hospital</h3>
                         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                             <input
@@ -116,37 +127,42 @@ export function Hospital() {
                                     Blood Stock
                                 </label>
 
-                                <div className="flex items-center space-x-2 mb-2">
-                                    <select
-                                        {...register("bloodStock.0.bloodType")}
-                                        className="border border-gray-300 rounded px-2 py-1 w-32"
-                                    >
-                                        <option value="">Select Type</option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                    </select>
-                                    <input
-                                        {...register("bloodStock.0.quantity", {valueAsNumber: true})}
-                                        type="number"
-                                        min={0}
-                                        placeholder="Quantity"
-                                        className="border border-gray-300 rounded px-2 py-1 w-24"
-                                    />
-                                    <button
-                                        type="button"
-                                        className="text-sm text-red-600 hover:underline"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
+                                {fields.map((field, index) => (
+                                    <div key={field.id}  className="flex items-center space-x-2 mb-2">
+                                        <select
+                                            {...register(`bloodStock.${index}.bloodType`)}
+                                            className="border border-gray-300 rounded px-2 py-1 w-32"
+                                        >
+                                            <option value="">Select Type</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                        <input
+                                            {...register(`bloodStock.${index}.quantity`, { valueAsNumber: true })}                                            type="number"
+                                            min={0}
+                                            placeholder="Quantity"
+                                            className="border border-gray-300 rounded px-2 py-1 w-24"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => remove(index)}
+                                            className="text-sm text-red-600 hover:underline"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                ))}
+
                                 <button
                                     type="button"
+                                    onClick={() => append({bloodType: "", quantity : 0})}
                                     className="text-sm text-blue-600 hover:underline mt-1"
                                 >
                                     + Add Blood Type

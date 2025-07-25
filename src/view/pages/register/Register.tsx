@@ -14,6 +14,7 @@ export function Register() {
     const { handleSubmit, register } = useForm<UserData>();
 
     const user = useSelector((state:RootState)=> state.user);
+    const navigate = useNavigate();
 
     const  onSubmit = (data : UserData) => {
         dispatch(registerUser(data));
@@ -21,7 +22,6 @@ export function Register() {
         navigate("/login");
     }
 
-    const navigate = useNavigate();
     return (
         <div className="min-h-screen flex justify-end items-center bg-cover bg-center"
              style={{ backgroundImage: `url(${bgImage})` }}>

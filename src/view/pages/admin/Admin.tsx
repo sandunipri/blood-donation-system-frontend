@@ -1,6 +1,39 @@
 import {Link} from "react-router-dom";
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "../../../store/Store.ts";
+import {useForm} from "react-hook-form";
+import type {AdminData} from "../../../model/AdminData.ts";
+import { useNavigate } from "react-router-dom";
+import {registerAdmin} from "../../../slices/AdminSlice.ts";
+
 
 export function Admin() {
+    const [time, setTime] = useState(() => new Date());
+    useEffect(() => {
+        const id = setInterval(() => {
+            setTime(new Date());
+        }, 1000);
+        return () => clearInterval(id);
+    }, []);
+
+    const [showModal, setShowModal] = useState(false);
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const { handleSubmit, register } = useForm<AdminData>();
+
+    const admin = useSelector((state:RootState)=> state.user);
+    const navigate = useNavigate();
+
+    const  onSubmit = (data : AdminData) => {
+        dispatch(registerAdmin(data));
+        console.log("DonorManage registered:", admin);
+        alert("New Admin Resister in Successfull")
+        setShowModal(false);
+        navigate("/admin");
+    }
+
     return (
         <>
             <div className="flex h-screen bg-gray-100">
@@ -27,7 +60,13 @@ export function Admin() {
 
                 <main className="flex-1 p-6">
                     <header className="flex justify-between items-center mb-6">
-                        <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
+                        <div className="flex flex-col">
+                            <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
+                            <div className="text-xl font-semibold">
+                                {time.toLocaleTimeString()}
+                            </div>
+                        </div>
+
                         <div className="p-6 bg-gray-100 rounded-lg shadow-md w-full max-w-md">
                             <h2 className="text-2xl font-bold text-gray-800 mb-4">Welcome, Admin</h2>
 
@@ -49,6 +88,7 @@ export function Admin() {
 
                                 <button
                                     className="flex items-center justify-center gap-2 text-red-900 font-semibold border border-red-900 px-4 py-2 rounded hover:bg-red-900 hover:text-white transition duration-300"
+                                    onClick={() => setShowModal(true)}
                                 >
                                     Add Admin
                                     <svg
@@ -61,6 +101,21 @@ export function Admin() {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/>
                                     </svg>
                                 </button>
+
+                   {/*             <button
+                                    className="flex items-center justify-center gap-2 text-red-900 font-semibold border border-red-900 px-4 py-2 rounded hover:bg-red-900 hover:text-white transition duration-300"
+                                >
+                                   Sign Out
+                                    <svg
+                                        className="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </button>*/}
                             </div>
 
                         </div>
@@ -82,6 +137,69 @@ export function Admin() {
                             <p className="text-2xl font-bold text-green-600">320</p>
                         </div>
                     </div>
+                    {/*Add admin model*/}
+
+                    {showModal && (
+                        <form className="max-w-md mx-auto p-6 bg-white rounded shadow space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                            <h2 className="text-2xl font-bold mb-4 text-center text-red-800">Register Admin</h2>
+
+                            <input
+                                {...register("name")}
+                                type="text"
+                                name="name"
+                                placeholder="Full Name"
+                                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                required
+                            />
+
+                            <input
+                                {...register("email")}
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                required
+                            />
+
+                            <input
+                                {...register("password")}
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                required
+                            />
+
+                            <input
+                                {...register("nic")}
+                                type="text"
+                                name="nic"
+                                placeholder="NIC Number"
+                                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                required
+                            />
+
+                            <input
+                                {...register("phone")}
+                                type="text"
+                                name="phone"
+                                placeholder="Phone Number"
+                                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                required
+                            />
+
+                            <input {...register("role")} type="hidden" name="role" value="admin"/>
+
+                            <button
+                                // onClick={() => setShowModal(false)}
+                                type="submit"
+                                className="w-full bg-red-700 text-white py-2 rounded hover:bg-red-800 transition"
+                            >
+                                Register Admin
+                            </button>
+                        </form>
+
+                    )}
                 </main>
             </div>
         </>

@@ -78,7 +78,7 @@ export function NavBar() {
                 </div>
                 <div className="flex space-x-4 text-blue-600">
                     <ul className="flex space-x-4">
-           {/*             {
+                  {/*      {
                             role === "admin" && (
                                 <>
                                     <li><Link to="/admin/donors" className="hover:underline">DONORS</Link></li>
