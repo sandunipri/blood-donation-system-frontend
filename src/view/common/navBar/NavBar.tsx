@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import {FaEnvelope, FaFacebookF, FaInstagram, FaTwitter} from "react-icons/fa";
-import bgImage from "../../../assets/images/navbar/blood-g4e28dcb97_1920.jpg";
+// import bgImage from "../../../assets/images/navbar/blood-g4e28dcb97_1920.jpg";
 import {useEffect, useState} from "react";
 
 
@@ -78,7 +78,7 @@ export function NavBar() {
                 </div>
                 <div className="flex space-x-4 text-blue-600">
                     <ul className="flex space-x-4">
-                  {/*      {
+                        {
                             role === "admin" && (
                                 <>
                                     <li><Link to="/admin/donors" className="hover:underline">DONORS</Link></li>
@@ -88,7 +88,7 @@ export function NavBar() {
                                     <li><Link to="/admin/settings" className="hover:underline">SETTINGS</Link></li>
                                 </>
                             )
-                        }*/}
+                        }
                         {
                             role === "donor" && (
                                 <>
@@ -101,11 +101,11 @@ export function NavBar() {
                             )
                         }
                         {
-                            role === "Hospital" && (
+                            role === "recipient" && (
                                 <>
                                     <li><Link to="/hospital/about" className="hover:underline">ABOUT</Link></li>
                                     <li><Link to="/hospital/contacts" className="hover:underline">CONTACTS</Link></li>
-                                    <li><Link to="/hospital/patients" className="font-bold hover:underline">PATIENTS</Link></li>
+                                    <li><Link to="/hospital/request" className="hover:underline">REQUEST</Link></li>
                                     <li><Link to="/hospital/blood-basics" className="hover:underline">BLOOD BASICS</Link></li>
                                     <li><Link to="/hospital/blood-bank" className="hover:underline">BLOOD BANKING AND DONATION</Link></li>
                                 </>
@@ -117,7 +117,7 @@ export function NavBar() {
                 </div>
             </div>
 
-            <div
+         {/*   <div
                 className="relative w-full h-[50vh] bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${bgImage})` }}
             >
@@ -130,7 +130,7 @@ export function NavBar() {
                         Patients
                     </h2>
                 </div>
-            </div>
+            </div>*/}
 
             ,
         </div>

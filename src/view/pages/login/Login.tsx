@@ -8,7 +8,7 @@ import type {AdminData} from "../../../model/AdminData.ts";
 type FormData = {
     email: string;
     password: string;
-    role: "admin" | "donor" | "recipient";
+    role: "admin" | "user";
 };
 
 

@@ -1,13 +1,9 @@
 import {Route, Routes, useNavigate} from "react-router-dom";
 import {DefaultLayout} from "./view/common/defaultLayout/DefaultLayout.tsx";
 import {Login} from "./view/pages/login/Login.tsx";
-import {Register} from "./view/pages/register/Register.tsx";
-import {Home} from "./view/pages/home/Home.tsx";
-import {DonorManage} from "./view/pages/donor/DonorManage.tsx";
 import {useEffect} from "react";
 import {isTokenExpired} from "./auth/auth.ts";
-import {Admin} from "./view/pages/admin/Admin.tsx";
-import {Hospital} from "./view/pages/hospital/Hospital.tsx";
+
 
 
 function App(){
@@ -27,11 +23,11 @@ function App(){
             <Routes>
                 <Route path="/*" element={<DefaultLayout/>}></Route>
                 <Route path="/login" element={<Login/>}></Route>
-                <Route path="/register" element={<Register/>}></Route>
+     {/*           <Route path="/register" element={<Register/>}></Route>
                 <Route path="/home" element={<Home/>}></Route>
                 <Route path="/donor-manage" element={<DonorManage/>}></Route>
                 <Route path="/admin" element={<Admin/>}></Route>
-                <Route path="/hospital" element={<Hospital/>}></Route>
+                <Route path="/hospital" element={<Hospital/>}></Route>*/}
                 {/*<Route path="/donor/profile" element={<DonorManage/>}></Route>*/}
                 {/*<Route path="/donor/contacts" element={<DonorManage/>}></Route>*/}
                 {/*<Route path="/donor/donors" element={<DonorManage/>}></Route>*/}
