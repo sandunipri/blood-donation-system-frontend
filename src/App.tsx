@@ -3,9 +3,6 @@ import {DefaultLayout} from "./view/common/defaultLayout/DefaultLayout.tsx";
 import {Login} from "./view/pages/login/Login.tsx";
 import {useEffect} from "react";
 import {isTokenExpired} from "./auth/auth.ts";
-
-
-
 function App(){
 
     const  navigate = useNavigate();
@@ -15,7 +12,7 @@ function App(){
         if (!token || isTokenExpired(token)){
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
-            navigate('/navbar');
+            navigate('/');
         }
     },[])
 
