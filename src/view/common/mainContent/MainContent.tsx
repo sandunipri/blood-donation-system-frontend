@@ -11,7 +11,7 @@ export function MainContent() {
     return (
         <Routes>
             <Route path="/register" element={<Register/>}></Route>
-            <Route path="/home" element={<Home/>}></Route>
+            <Route path="/" element={<Home/>}></Route>
             <Route path="/donor-manage" element={<DonorManage/>}></Route>
             <Route path="/admin" element={<Admin/>}></Route>
             <Route path="/hospital" element={<Hospital/>}></Route>
