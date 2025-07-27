@@ -3,6 +3,7 @@ import {DefaultLayout} from "./view/common/defaultLayout/DefaultLayout.tsx";
 import {Login} from "./view/pages/login/Login.tsx";
 import {useEffect} from "react";
 import {isTokenExpired} from "./auth/auth.ts";
+import {Register} from "./view/pages/register/Register.tsx";
 function App(){
 
     const  navigate = useNavigate();
@@ -20,7 +21,9 @@ function App(){
             <Routes>
                 <Route path="/*" element={<DefaultLayout/>}></Route>
                 <Route path="/login" element={<Login/>}></Route>
-     {/*           <Route path="/register" element={<Register/>}></Route>
+                <Route path="/register" element={<Register/>}></Route>
+
+                {/*           <Route path="/register" element={<Register/>}></Route>
                 <Route path="/home" element={<Home/>}></Route>
                 <Route path="/donor-manage" element={<DonorManage/>}></Route>
                 <Route path="/admin" element={<Admin/>}></Route>
