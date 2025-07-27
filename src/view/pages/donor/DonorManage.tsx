@@ -3,35 +3,54 @@ import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../../store/Store.ts";
 import {useEffect, useState} from "react";
 import {getAllDonors} from "../../../slices/UserSlice.ts";
-import {getDonationRecordByEmail} from "../../../slices/DonationSlice.ts";
+import {getDonationRecordByEmail, saveDonationRecord} from "../../../slices/DonationSlice.ts";
+import type {DonationData} from "../../../model/DonationData.ts";
+import {useForm} from "react-hook-form";
 
 export function DonorManage() {
     const dispatch = useDispatch<AppDispatch>();
+    /*get donor list*/
     const donors = useSelector((state: RootState) => state.user.list);
+
+
+    /*get donor record*/
     const [showModal, setShowModal] = useState(false);
-
-    const [showDonateModal, setShowDonateModal] = useState(false);
-    const [donateEmail, setDonateEmail] = useState("");
-
-
     const donationRecords = useSelector((state: RootState) => state.donation.list);
-
     const [selectedDonorEmail, setSelectedDonorEmail] = useState("");
-
     const viewDonationRecord = async (email: string) => {
         setSelectedDonorEmail(email);
         setShowModal(true)
         await dispatch(getDonationRecordByEmail(email));
     };
-    const handleDonate = (email: string) => {
-        setDonateEmail(email);
-        setShowDonateModal(true);
-    };
-
     useEffect(() => {
         console.log("Fetching all donors...");
         dispatch(getAllDonors());
     }, [dispatch]);
+
+
+    /*get donate*/
+    const {handleSubmit, register} = useForm<DonationData>();
+    const [showDonateModal, setShowDonateModal] = useState(false);
+    const [selectedDonateDonor, setSelectedDonateDonor] = useState<any | null>(null);
+    const onSubmit = async (data: DonationData) => {
+        if (!selectedDonateDonor) return;
+
+        const completeData: DonationData = {
+            ...data,
+            donorEmail: selectedDonateDonor.email,
+            bloodGroup: selectedDonateDonor.bloodGroup,
+        };
+
+        try {
+            await dispatch(saveDonationRecord(completeData)).unwrap(); // if using createAsyncThunk
+            alert("Donation record saved successfully!");
+            setShowDonateModal(false);
+            setSelectedDonateDonor(null);
+        } catch (error) {
+            alert("Failed to save donation record. Please try again.");
+        }
+    };
+
 
 
     return (
@@ -74,8 +93,12 @@ export function DonorManage() {
                                 className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
                                 View Record
                             </button>
-                            <button onClick={() => handleDonate(donor.email)}
-                                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                            <button
+                                onClick={() => {
+                                    setSelectedDonateDonor(donor);
+                                    setShowDonateModal(true);
+                                }}
+                                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
                                 Donate
                             </button>
                         </div>
@@ -93,7 +116,7 @@ export function DonorManage() {
                         <div className="max-h-96 overflow-y-auto">
                             {(() => {
                                 const filteredRecords = donationRecords.filter(
-                                    (record) => record.donorEmail.toLowerCase().trim() === selectedDonorEmail.toLowerCase().trim()
+                                    (record) => record.donorEmail === selectedDonorEmail
                                 );
                                 return filteredRecords.length > 0 ? (
                                     filteredRecords.map((record, index) => (
@@ -155,17 +178,13 @@ export function DonorManage() {
                         <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg relative">
                             <h3 className="text-2xl font-bold text-green-600 mb-6 border-b pb-2">Make a Donation</h3>
 
-                            <form
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    console.log("Donate from", donateEmail);
-                                    setShowDonateModal(false);
-                                }}
-                                className="space-y-4"
+                            <form onSubmit={handleSubmit(onSubmit)}
+                                  className="space-y-4"
                             >
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Hospital Email</label>
                                     <input
+                                        {...register("hospitalEmail")}
                                         type="email"
                                         required
                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
@@ -175,6 +194,7 @@ export function DonorManage() {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Units to Donate</label>
                                     <input
+                                        {...register("unitsDonated")}
                                         type="number"
                                         min="1"
                                         required
@@ -185,6 +205,7 @@ export function DonorManage() {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Date</label>
                                     <input
+                                        {...register("donationDate")}
                                         type="date"
                                         required
                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
@@ -194,12 +215,16 @@ export function DonorManage() {
                                 <div className="flex justify-end gap-3 pt-4">
                                     <button
                                         type="button"
-                                        onClick={() => setShowDonateModal(false)}
+                                        onClick={() => {
+                                            setShowDonateModal(false);
+                                            setSelectedDonateDonor(null);
+                                        }}
                                         className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition"
                                     >
                                         Cancel
                                     </button>
                                     <button
+
                                         type="submit"
                                         className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
                                     >

@@ -1,6 +1,7 @@
 import type {DonationData} from "../model/DonationData.ts";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {backendApi} from "../api.ts";
+import {getAllDonors} from "./UserSlice.ts";
 
 interface DonationState {
     list: DonationData[];
@@ -22,6 +23,19 @@ export const getDonationRecordByEmail = createAsyncThunk(
         return response.data;
     }
 )
+export const saveDonationRecord = createAsyncThunk(
+    '/donation/donate',
+    async (data: DonationData, { rejectWithValue }) => {
+        try {
+            const response = await backendApi.post('/donation/donate', data);
+            console.log("Response from saveDonationRecord:", response.data);
+            return response.data;
+        } catch (err: any) {
+            console.error("Error saving donation record:", err.response?.data);
+            return rejectWithValue(err.response?.data?.error || "Failed to save donation record");
+        }
+    }
+)
 
 
 const donationSlice = createSlice({
@@ -41,7 +55,20 @@ const donationSlice = createSlice({
             .addCase(getDonationRecordByEmail.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || 'Failed to fetch donation records';
+            })
+
+            .addCase(getAllDonors.rejected, (state, action) => {
+                state.error = action.payload as string;
+            })
+            .addCase(saveDonationRecord.pending, () => {
+                alert("Saving donation record, please wait...");
+            })
+            .addCase(saveDonationRecord.fulfilled, (state, action) => {
+                console.log("Donation record saved successfully:", action.payload);
+                state.list.push(action.payload);
+                state.error = null;
             });
+
 
     }
 });

@@ -39,6 +39,8 @@ export const getAllDonors = createAsyncThunk(
 )
 
 
+
+
 /*const userSlice = createSlice({
     name : 'auth',
     initialState : initialState,
@@ -73,15 +75,12 @@ const userSlice = createSlice({
             .addCase(registerUser.rejected, (state, action) => {
                 state.error = action.payload as string;
             })
-
             .addCase(getAllDonors.fulfilled, (state, action) => {
                 console.log("Fetched all donors:", action.payload);
                 state.list = action.payload;
                 state.error = null;
-            })
-            .addCase(getAllDonors.rejected, (state, action) => {
-                state.error = action.payload as string;
             });
+
     }
 });
 
