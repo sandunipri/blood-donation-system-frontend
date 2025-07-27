@@ -3,17 +3,36 @@ import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../../store/Store.ts";
 import {useEffect, useState} from "react";
 import {getAllDonors} from "../../../slices/UserSlice.ts";
+import {getDonationRecordByEmail} from "../../../slices/DonationSlice.ts";
 
 export function DonorManage() {
     const dispatch = useDispatch<AppDispatch>();
     const donors = useSelector((state: RootState) => state.user.list);
     const [showModal, setShowModal] = useState(false);
 
+    const [showDonateModal, setShowDonateModal] = useState(false);
+    const [donateEmail, setDonateEmail] = useState("");
+
+
+    const donationRecords = useSelector((state: RootState) => state.donation.list);
+
+    const [selectedDonorEmail, setSelectedDonorEmail] = useState("");
+
+    const viewDonationRecord = async (email: string) => {
+        setSelectedDonorEmail(email);
+        setShowModal(true)
+        await dispatch(getDonationRecordByEmail(email));
+    };
+    const handleDonate = (email: string) => {
+        setDonateEmail(email);
+        setShowDonateModal(true);
+    };
 
     useEffect(() => {
         console.log("Fetching all donors...");
         dispatch(getAllDonors());
     }, [dispatch]);
+
 
     return (
         <div className="max-w-4xl mx-auto p-6 mt-40 rounded-2xl bg-white shadow-xl border border-gray-200">
@@ -51,11 +70,12 @@ export function DonorManage() {
                                 Delete
                             </button>
                             <button
-                                onClick={() => setShowModal(true)}
+                                onClick={() => viewDonationRecord(donor.email)}
                                 className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
                                 View Record
                             </button>
-                            <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                            <button onClick={() => handleDonate(donor.email)}
+                                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
                                 Donate
                             </button>
                         </div>
@@ -65,17 +85,128 @@ export function DonorManage() {
                 <p className="text-center text-gray-500">No donors found.</p>
             )}
             {/*model for the record*/}
-            <>
-                {showModal && (
-                    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                            <h3 className="text-xl font-semibold mb-4">Donation Record</h3>
-                            <p className="text-gray-600">Details about the donation record will go here.</p>
+            <>{showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-2xl relative">
+                        <h3 className="text-2xl font-bold text-red-600 mb-6 border-b pb-2">Donation History</h3>
+
+                        <div className="max-h-96 overflow-y-auto">
+                            {(() => {
+                                const filteredRecords = donationRecords.filter(
+                                    (record) => record.donorEmail.toLowerCase().trim() === selectedDonorEmail.toLowerCase().trim()
+                                );
+                                return filteredRecords.length > 0 ? (
+                                    filteredRecords.map((record, index) => (
+                                        <div
+                                            key={index}
+                                            className="border border-gray-200 rounded-lg p-4 mb-4 shadow-sm bg-gray-50"
+                                        >
+                                            <div
+                                                className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+                                                <p><span
+                                                    className="font-semibold">Donor Email:</span> {record.donorEmail}
+                                                </p>
+                                                <p><span
+                                                    className="font-semibold">Hospital Email:</span> {record.hospitalEmail}
+                                                </p>
+                                                <p><span
+                                                    className="font-semibold">Blood Group:</span> {record.bloodGroup}
+                                                </p>
+                                                <p><span
+                                                    className="font-semibold">Units Donated:</span> {record.unitsDonated} Units
+                                                </p>
+                                                <p><span
+                                                    className="font-semibold">Donation Date:</span> {new Date(record.donationDate).toLocaleString()}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-500 text-center">No donation records available.</p>
+                                );
+                            })()}
+                        </div>
+
+                        {/* Buttons */}
+                        <div className="flex justify-end gap-3 mt-6">
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                                className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition"
+                            >
                                 Close
                             </button>
+                            <button
+                                /* onClick={() => handleDownload()} */
+                                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                            >
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            </>
+
+            {/*model for the donate*/}
+            <>
+                {showDonateModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg relative">
+                            <h3 className="text-2xl font-bold text-green-600 mb-6 border-b pb-2">Make a Donation</h3>
+
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    console.log("Donate from", donateEmail);
+                                    setShowDonateModal(false);
+                                }}
+                                className="space-y-4"
+                            >
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Hospital Email</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Units to Donate</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        required
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Date</label>
+                                    <input
+                                        type="date"
+                                        required
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                    />
+                                </div>
+
+                                <div className="flex justify-end gap-3 pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowDonateModal(false)}
+                                        className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 )}

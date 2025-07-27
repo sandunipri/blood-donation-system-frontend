@@ -21,8 +21,8 @@ export const getDonationRecordByEmail = createAsyncThunk(
         console.log("Response from getDonationRecordByEmail:", response.data);
         return response.data;
     }
-
 )
+
 
 const donationSlice = createSlice({
     name: 'donation',
