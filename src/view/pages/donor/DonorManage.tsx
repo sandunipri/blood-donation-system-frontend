@@ -6,6 +6,7 @@ import {getAllDonors} from "../../../slices/UserSlice.ts";
 import {getDonationRecordByEmail, saveDonationRecord} from "../../../slices/DonationSlice.ts";
 import type {DonationData} from "../../../model/DonationData.ts";
 import {useForm} from "react-hook-form";
+import {getAllHospitals} from "../../../slices/HospitalSlice.ts";
 
 export function DonorManage() {
     const dispatch = useDispatch<AppDispatch>();
@@ -48,8 +49,16 @@ export function DonorManage() {
             setSelectedDonateDonor(null);
         } catch (error) {
             alert("Failed to save donation record. Please try again.");
+            console.error("Error saving donation record:", error);
         }
     };
+
+    /*load all hospital emails*/
+    const hospitals = useSelector((state: RootState) => state.hospital.list);
+    useEffect(() => {
+        dispatch(getAllHospitals());
+    }, [dispatch]);
+
 
 
 
@@ -181,15 +190,19 @@ export function DonorManage() {
                             <form onSubmit={handleSubmit(onSubmit)}
                                   className="space-y-4"
                             >
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Hospital Email</label>
-                                    <input
-                                        {...register("hospitalEmail")}
-                                        type="email"
-                                        required
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                    />
-                                </div>
+                                <select
+                                    {...register("hospitalEmail")}
+                                    required
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                >
+                                    <option value="">Select a hospital</option>
+                                    {hospitals && hospitals.map((hospital, index) => (
+                                        <option key={index} value={hospital.email}>
+                                            {hospital.name} ({hospital.email})
+                                        </option>
+                                    ))}
+                                </select>
+
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Units to Donate</label>
