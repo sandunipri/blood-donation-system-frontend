@@ -6,6 +6,7 @@ import {Hospital} from "../../pages/hospital/Hospital.tsx";
 import {Home} from "../../pages/home/Home.tsx";
 import {RequestBlood} from "../../pages/request/RequestBlood.tsx";
 import {Notification} from "../../pages/notification/Notification.tsx";
+import {MedicalHistory} from "../../pages/history/MedicalHistory.tsx";
 
 export function MainContent() {
     return (
@@ -17,7 +18,7 @@ export function MainContent() {
             <Route path="/hospital" element={<Hospital/>}></Route>
             <Route path="/request" element={<RequestBlood/>}></Route>
             <Route path="/notification" element={<Notification/>}></Route>
-
+            <Route path="/history" element={<MedicalHistory/>}></Route>
         </Routes>
     );
 }
