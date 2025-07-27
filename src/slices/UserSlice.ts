@@ -3,19 +3,19 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {backendApi} from "../api.ts";
 
 
-interface userState{
-    list : UserData[]
-    error : string | null | undefined
+interface userState {
+    list: UserData[]
+    error: string | null | undefined
 }
 
 const initialState: userState = {
-    list:  [],
+    list: [],
     error: null
 }
 
 export const registerUser = createAsyncThunk(
     'auth/register',
-    async (data: UserData, { rejectWithValue }) => {
+    async (data: UserData, {rejectWithValue}) => {
         try {
             console.log("Registering user with data:", data);
             const response = await backendApi.post("/auth/register", data);
@@ -26,7 +26,6 @@ export const registerUser = createAsyncThunk(
             return rejectWithValue(err.response?.data?.error || "Registration failed");
         }
     }
-
 )
 
 export const getAllDonors = createAsyncThunk(
@@ -38,9 +37,14 @@ export const getAllDonors = createAsyncThunk(
     }
 )
 
-
-
-
+export const getAllRecipient = createAsyncThunk(
+    'user/getAllRecipient',
+    async () => {
+        const response = await backendApi.get('/user/getAllRecipient');
+        console.log("Response from getAllRecipient:", response.data);
+        return response.data;
+    }
+)
 /*const userSlice = createSlice({
     name : 'auth',
     initialState : initialState,
@@ -79,8 +83,19 @@ const userSlice = createSlice({
                 console.log("Fetched all donors:", action.payload);
                 state.list = action.payload;
                 state.error = null;
+            })
+            .addCase(getAllRecipient.pending, (state) => {
+                console.log("Fetching all recipients...");
+                state.error = null;
+            })
+            .addCase(getAllRecipient.fulfilled, (state, action) => {
+                console.log("Fetched all recipients:", action.payload);
+                state.list = action.payload;
+            })
+            .addCase(getAllRecipient.rejected, (state, action) => {
+                console.error("Error fetching recipients:", action.error);
+                state.error = action.error.message;
             });
-
     }
 });
 

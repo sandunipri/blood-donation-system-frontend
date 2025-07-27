@@ -137,7 +137,7 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                                 <>
                                     <li><Link to="/donors" className="hover:underline">DONORS</Link></li>
                                     <li><Link to="/hospital" className="hover:underline">HOSPITALS</Link></li>
-                                    <li><Link to="/admin/patients" className="font-bold hover:underline">PATIENTS</Link>
+                                    <li><Link to="/patient" className="font-bold hover:underline">PATIENTS</Link>
                                     </li>
                                     <li><Link to="/notification" className="hover:underline">NOTIFICATIONS</Link></li>
                                     <li><Link to="/admin/settings" className="hover:underline">SETTINGS</Link></li>
