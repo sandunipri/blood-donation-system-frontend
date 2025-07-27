@@ -42,6 +42,7 @@ const donationSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message || 'Failed to fetch donation records';
             });
+
     }
-})
+});
 export const useDonationReducer = donationSlice.reducer;

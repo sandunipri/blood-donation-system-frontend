@@ -29,22 +29,17 @@ export const registerUser = createAsyncThunk(
 
 )
 
-/*export const loginUser = createAsyncThunk(
-    'auth/login',
-    async (data : UserData,) => {
-        try {
-            console.log("Logging in user with data:", data);
-            const response = await backendApi.post("/auth/login", data);
-            const message = response.data.message;
-            alert(message);
-        }catch (error){
-            console.error("Login failed:", error);
-        }
+export const getAllDonors = createAsyncThunk(
+    'user/getAllDonors',
+    async () => {
+        const response = await backendApi.get('/user/getAllDonors');
+        console.log("Response from getAllDonors:", response.data);
+        return response.data;
     }
-)*/
+)
 
 
-const userSlice = createSlice({
+/*const userSlice = createSlice({
     name : 'auth',
     initialState : initialState,
     reducers : {},
@@ -60,6 +55,34 @@ const userSlice = createSlice({
             state.error = action.payload as string;
         });
     }
-})
+})*/
+
+const userSlice = createSlice({
+    name: 'user',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(registerUser.pending, () => {
+                alert("Registering user, please wait...");
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.list = [action.payload];
+                state.error = null;
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.error = action.payload as string;
+            })
+
+            .addCase(getAllDonors.fulfilled, (state, action) => {
+                console.log("Fetched all donors:", action.payload);
+                state.list = action.payload;
+                state.error = null;
+            })
+            .addCase(getAllDonors.rejected, (state, action) => {
+                state.error = action.payload as string;
+            });
+    }
+});
 
 export const userReducer = userSlice.reducer;

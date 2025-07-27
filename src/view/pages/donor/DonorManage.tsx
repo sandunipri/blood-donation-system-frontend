@@ -1,63 +1,48 @@
-import { useState } from "react";
+import { FaTint, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../../store/Store.ts";
+import { useEffect } from "react";
+import { getAllDonors } from "../../../slices/UserSlice.ts";
 
 export function DonorManage() {
-    const [donors] = useState([
-        {
-            id: 1,
-            name: "Sanduni Priyadarshani",
-            bloodGroup: "A+",
-            city: "Colombo",
-            contact: "076-4389984",
-        },
-        {
-            id: 2,
-            name: "Kasun Perera",
-            bloodGroup: "O-",
-            city: "Galle",
-            contact: "071-3456789",
-        },
-    ]);
+    const dispatch = useDispatch<AppDispatch>();
+    const donors = useSelector((state: RootState) => state.user.list);
+
+    useEffect(() => {
+        console.log("Fetching all donors...");
+        dispatch(getAllDonors());
+    }, [dispatch]);
 
     return (
-        <div className="p-6 bg-gray-100 min-h-screen">
-            <div className="max-w-6xl mx-auto bg-white p-6 rounded shadow-md">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold text-gray-800">Donor Management</h2>
-                    <button className="bg-red-900 text-white px-4 py-2 rounded hover:bg-red-800 transition">
-                        Add Donor
-                    </button>
-                </div>
-
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-200">
-                        <thead>
-                        <tr className="bg-gray-100 text-left text-gray-700">
-                            <th className="px-4 py-2 border">#</th>
-                            <th className="px-4 py-2 border">Name</th>
-                            <th className="px-4 py-2 border">Blood Group</th>
-                            <th className="px-4 py-2 border">City</th>
-                            <th className="px-4 py-2 border">Contact</th>
-                            <th className="px-4 py-2 border">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {donors.map((donor, index) => (
-                            <tr key={donor.id} className="hover:bg-gray-50">
-                                <td className="px-4 py-2 border">{index + 1}</td>
-                                <td className="px-4 py-2 border">{donor.name}</td>
-                                <td className="px-4 py-2 border">{donor.bloodGroup}</td>
-                                <td className="px-4 py-2 border">{donor.city}</td>
-                                <td className="px-4 py-2 border">{donor.contact}</td>
-                                <td className="px-4 py-2 border">
-                                    <button className="text-blue-600 hover:underline mr-3">Edit</button>
-                                    <button className="text-red-600 hover:underline">Delete</button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div className="max-w-4xl mx-auto mt-8 p-6 mt-40 rounded-2xl bg-white shadow-xl border border-gray-200">
+            {donors && donors.length > 0 ? (
+                donors.map((donor, index) => (
+                    <div
+                        key={index}
+                        className="flex flex-col md:flex-row gap-6 items-center border-b border-gray-100 py-4"
+                    >
+                        <div className="flex-1">
+                            <h2 className="text-2xl font-bold text-gray-800">
+                                {donor.firstname} {donor.lastname}
+                            </h2>
+                            <p className="text-gray-600 flex items-center gap-2 mt-1">
+                                <FaEnvelope className="text-red-500" /> {donor.email}
+                            </p>
+                            <p className="text-gray-600 flex items-center gap-2 mt-1">
+                                <FaPhoneAlt className="text-green-500" /> {donor.phone}
+                            </p>
+                            <p className="mt-2">
+                                <span className="inline-flex items-center gap-1 bg-red-100 text-red-600 text-sm px-3 py-1 rounded-full">
+                                    <FaTint /> Blood Group:{" "}
+                                    <strong>{donor.bloodGroup}</strong>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                ))
+            ) : (
+                <p className="text-center text-gray-500">No donors found.</p>
+            )}
         </div>
     );
 }

@@ -24,7 +24,7 @@ export function Notification() {
     };
 
     return (
-        <div className="p-4 max-w-2xl mx-auto">
+        <div className="p-4 mt-40 max-w-2xl mx-auto">
             <h2 className="text-xl font-bold mb-4">Admin Notifications</h2>
 
             {loading && <p className="text-gray-600 animate-pulse">Loading notifications...</p>}

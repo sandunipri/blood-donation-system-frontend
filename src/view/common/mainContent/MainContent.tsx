@@ -19,6 +19,7 @@ export function MainContent() {
             <Route path="/request" element={<RequestBlood/>}></Route>
             <Route path="/notification" element={<Notification/>}></Route>
             <Route path="/history" element={<MedicalHistory/>}></Route>
+            <Route path="/donors" element={<DonorManage/>}></Route>
         </Routes>
     );
 }

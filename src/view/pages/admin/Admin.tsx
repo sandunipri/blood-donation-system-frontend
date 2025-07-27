@@ -36,7 +36,7 @@ export function Admin() {
 
     return (
         <>
-            <div className="flex h-screen bg-gray-100">
+            <div className="flex h-screen mt-36 bg-gray-100">
                 {/*Sidebar*/}
                 <aside className="w-64 bg-white shadow-md">
                     <div className="p-6 text-xl font-bold text-red-800 border-b">Admin Panel</div>
