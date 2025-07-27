@@ -136,7 +136,7 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                             role === "admin" && (
                                 <>
                                     <li><Link to="/donors" className="hover:underline">DONORS</Link></li>
-                                    <li><Link to="/admin/hospitals" className="hover:underline">HOSPITALS</Link></li>
+                                    <li><Link to="/hospital" className="hover:underline">HOSPITALS</Link></li>
                                     <li><Link to="/admin/patients" className="font-bold hover:underline">PATIENTS</Link>
                                     </li>
                                     <li><Link to="/notification" className="hover:underline">NOTIFICATIONS</Link></li>

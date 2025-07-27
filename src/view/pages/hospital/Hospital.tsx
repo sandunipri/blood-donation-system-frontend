@@ -38,7 +38,7 @@ export function Hospital() {
     }
 
     return (
-        <div className="p-6 bg-gray-100 min-h-screen">
+        <div className="p-6 bg-gray-100 min-h-screen mt-50">
             <div className="max-w-6xl mx-auto bg-white p-6 rounded shadow-md">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-xl font-bold text-gray-800">Hospital Management</h2>
@@ -85,7 +85,7 @@ export function Hospital() {
 
             {/* Modal */}
             {showModal && (
-                <div className="fixed bg-transparent  flex justify-center items-center inset-0 z-40">
+                <div className="fixed bg-transparent mt-30  flex justify-center items-center inset-0 z-40">
                     <div className="bg-gray-100 p-6 rounded shadow-md w-full max-w-2xl">
                         <h3 className="text-lg font-bold mb-4">Add Hospital</h3>
                         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
