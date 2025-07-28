@@ -6,11 +6,13 @@ import {backendApi} from "../api.ts";
 interface userState {
     list: UserData[]
     error: string | null | undefined
+    count: number;
 }
 
 const initialState: userState = {
     list: [],
-    error: null
+    error: null,
+    count: 0,
 }
 
 export const registerUser = createAsyncThunk(
@@ -45,6 +47,16 @@ export const getAllRecipient = createAsyncThunk(
         return response.data;
     }
 )
+
+export const getUserCount = createAsyncThunk(
+    '/user/getAllUserCount',
+    async () => {
+        const response = await backendApi.get('/user/getAllUserCount');
+        console.log("Response from getUserCount:", response.data);
+        return response.data;
+    }
+)
+
 /*const userSlice = createSlice({
     name : 'auth',
     initialState : initialState,
@@ -94,6 +106,14 @@ const userSlice = createSlice({
             })
             .addCase(getAllRecipient.rejected, (state, action) => {
                 console.error("Error fetching recipients:", action.error);
+                state.error = action.error.message;
+            })
+            .addCase(getUserCount.fulfilled, (state, action) => {
+                console.log("Fetched user count:", action.payload);
+                state.count = action.payload.count;
+            })
+            .addCase(getUserCount.rejected, (state, action) => {
+                console.error("Error fetching user count:", action.error);
                 state.error = action.error.message;
             });
     }

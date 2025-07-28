@@ -5,11 +5,13 @@ import {backendApi} from "../api.ts";
 interface hospitalState {
     list: HospitalData[]
     error: string | null | undefined
+    count : number,
 }
 
 const initialState: hospitalState = {
     list: [],
-    error: null
+    error: null,
+    count: 0,
 }
 
 export const saveHospital = createAsyncThunk(
@@ -37,6 +39,15 @@ export const getAllHospitals = createAsyncThunk(
     }
 )
 
+export const getHospitalCount = createAsyncThunk(
+    'hospital/getAllHospitalCount',
+    async () => {
+        const response = await backendApi.get("/hospital/getAllHospitalCount");
+        console.log("Hospital count:", response.data);
+        return response.data;
+    }
+)
+
 
 const hospitalSlice = createSlice({
     name: 'hospital',
@@ -59,9 +70,19 @@ const hospitalSlice = createSlice({
                 state.list = action.payload;
                 state.error = null;
             })
-            .addCase(getAllHospitals.rejected, (state, action) => {
+            .addCase(getHospitalCount.pending, (state) => {
+                console.log("Fetching hospital count...");
+                state.error = null;
+            })
+            .addCase(getHospitalCount.fulfilled, (state, action) => {
+                console.log("Hospital count fetched:", action.payload.count);
+                state.count = action.payload.count;
+            })
+            .addCase(getHospitalCount.rejected, (state, action) => {
                 state.error = action.error.message;
+                console.error("Error fetching hospital count:", action.error.message);
             });
+
     }
 })
 

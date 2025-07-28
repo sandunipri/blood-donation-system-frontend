@@ -1,12 +1,15 @@
-import { Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../../store/Store.ts";
 import {useForm} from "react-hook-form";
 import type {AdminData} from "../../../model/AdminData.ts";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {registerAdmin} from "../../../slices/AdminSlice.ts";
 import {getBloodStockOneByOne} from "../../../slices/BloodStockSlice.ts";
+import {getUserCount} from "../../../slices/UserSlice.ts";
+import {getAllRequestCount} from "../../../slices/BloodRequestSlice.ts";
+import {getHospitalCount} from "../../../slices/HospitalSlice.ts";
 
 
 export function Admin() {
@@ -22,12 +25,12 @@ export function Admin() {
 
     const dispatch = useDispatch<AppDispatch>();
 
-    const { handleSubmit, register } = useForm<AdminData>();
+    const {handleSubmit, register} = useForm<AdminData>();
 
-    const admin = useSelector((state:RootState)=> state.admin);
+    const admin = useSelector((state: RootState) => state.admin);
     const navigate = useNavigate();
 
-    const  onSubmit = (data : AdminData) => {
+    const onSubmit = (data: AdminData) => {
 
         dispatch(registerAdmin(data));
         console.log("DonorManage registered:", admin);
@@ -37,14 +40,29 @@ export function Admin() {
     }
 
     /*load blood stocks*/
-
-
     const bloodStock = useSelector((state: RootState) => state.bloodStock.list);
 
     useEffect(() => {
         dispatch(getBloodStockOneByOne());
     }, [dispatch]);
 
+    /*load all users count*/
+    const userCount = useSelector((state: RootState) => state.user.count);
+    useEffect(() => {
+        dispatch(getUserCount())
+    }, [dispatch]);
+
+    /*load all requests count*/
+    const requestCount = useSelector((state: RootState) => state.bloodRequest.count);
+    useEffect(() => {
+        dispatch(getAllRequestCount());
+    }, [dispatch]);
+
+    /*get All HospitalCount*/
+    const hospitalCount = useSelector((state: RootState) => state.hospital.count);
+    useEffect(() => {
+        dispatch(getHospitalCount());
+    }, [dispatch]);
 
 
     return (
@@ -78,7 +96,7 @@ export function Admin() {
                                     strokeWidth="2"
                                     viewBox="0 0 24 24"
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/>
                                 </svg>
                             </button>
                         </ul>
@@ -94,15 +112,12 @@ export function Admin() {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-gray-100 flex flex-row justify-between items-center rounded-lg shadow-md w-100 max-w-4xl">
+                        <div
+                            className="p-6 bg-gray-100 flex flex-row justify-between items-center rounded-lg shadow-md w-100 max-w-4xl">
                             <h2 className="text-2xl font-bold text-gray-800">Welcome Admin Page</h2>
-
                             <div className="flex gap-4">
-
-
                             </div>
                         </div>
-
 
                     </header>
 
@@ -111,15 +126,15 @@ export function Admin() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="bg-white p-4 rounded-xl shadow">
                                 <h2 className="text-gray-500 text-sm">Total Users</h2>
-                                <p className="text-2xl font-bold text-blue-700">120</p>
+                                <p className="text-2xl font-bold text-blue-700">{userCount}</p>
                             </div>
                             <div className="bg-white p-4 rounded-xl shadow">
                                 <h2 className="text-gray-500 text-sm">Pending Requests</h2>
-                                <p className="text-2xl font-bold text-red-600">8</p>
+                                <p className="text-2xl font-bold text-red-600">{requestCount}</p>
                             </div>
                             <div className="bg-white p-4 rounded-xl shadow">
-                                <h2 className="text-gray-500 text-sm">Available Blood Units</h2>
-                                <p className="text-2xl font-bold text-green-600">320</p>
+                                <h2 className="text-gray-500 text-sm">Available Hospital Units</h2>
+                                <p className="text-2xl font-bold text-green-600">{hospitalCount}</p>
                             </div>
                         </div>
                         {/*bloodStock*/}
@@ -197,7 +212,7 @@ export function Admin() {
                                     required
                                 />
 
-                                <input {...register("role")} type="hidden" name="role" value="admin" />
+                                <input {...register("role")} type="hidden" name="role" value="admin"/>
 
                                 <button
                                     type="submit"

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import { backendApi } from "../api"; // your axios config with token
 import type { BloodRequestData } from "../model/BloodRequestData";
 
@@ -6,12 +6,14 @@ interface BloodRequestState {
     list: BloodRequestData[];
     error: string | null;
     loading: boolean;
+    count : number;
 }
 
 const initialState: BloodRequestState = {
     list: [],
     error: null,
     loading: false,
+    count : 0,
 };
 
 export const sendBloodRequest = createAsyncThunk(
@@ -28,7 +30,7 @@ export const sendBloodRequest = createAsyncThunk(
 );
 
 export const fetchAllBloodRequests = createAsyncThunk(
-    "bloodRequest/fetchAll",
+    "request-blood/getAllRequestCount",
     async (_, { rejectWithValue }) => {
         try {
             const response = await backendApi.get("/blood-request");
@@ -38,6 +40,15 @@ export const fetchAllBloodRequests = createAsyncThunk(
         }
     }
 );
+
+export const getAllRequestCount = createAsyncThunk(
+    "bloodRequest/getAllRequestCount",
+    async () => {
+        const response = await backendApi.get("/request-blood/getAllRequestCount");
+        console.log("Response from getAllRequestCount:", response.data);
+        return response.data;
+    }
+)
 
 const bloodRequestSlice = createSlice({
     name: "bloodRequest",
@@ -56,7 +67,29 @@ const bloodRequestSlice = createSlice({
             .addCase(fetchAllBloodRequests.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
-            });
+            })
+           /* .addCase(sendBloodRequest.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(sendBloodRequest.fulfilled, (state, action) => {
+                state.loading = false;
+                state.list.push(action.payload);
+                state.error = null;
+            })
+            .addCase(sendBloodRequest.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })*/
+            .addCase(getAllRequestCount.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllRequestCount.fulfilled, (state, action: PayloadAction<{ count: number }>) => {
+                state.loading = false;
+                state.count = action.payload.count;
+                state.error = null;
+            })
     },
 });
 
