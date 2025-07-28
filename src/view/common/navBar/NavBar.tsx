@@ -25,7 +25,12 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
 
     return (
         <div className="font-sans fixed top-0 left-0 w-full z-50 bg-white shadow-md">
-            <div className="p-2 font-sans flex justify-between items-center shadow-md">
+            <div
+                className="p-4 font-sans flex justify-between items-center shadow-md bg-cover bg-center"
+                style={{ backgroundImage: "url('')" }}
+            >
+                {/*set bg-image for the nave bar size*/}
+
                 <div className="flex items-center space-x-4">
                     <div className="p-1 bg-red-100 rounded-full shadow-md">
                         <img
@@ -147,11 +152,13 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                         {
                             role === "admin" && (
                                 <>
-                                    <li><Link to="/donors" className="hover:underline">DONORS</Link></li>
-                                    <li><Link to="/hospital" className="hover:underline">HOSPITALS</Link></li>
-                                    <li><Link to="/patient" className="font-bold hover:underline">PATIENTS</Link>
+                                    <li><Link to="/donors" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">DONORS</Link></li>
+                                    <li><Link to="/hospital" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">HOSPITALS</Link></li>
+                                    <li><Link to="/patient" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PATIENTS</Link>
                                     </li>
-                                    <li><Link to="/notification" className="hover:underline">NOTIFICATIONS</Link></li>
+                                    <li><Link to="/notification" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">NOTIFICATIONS</Link></li>
+                                    <li><Link to="/admin" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PROFILE</Link></li>
+
                                 </>
                             )
                         }
@@ -160,7 +167,7 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                                 <>
                                     <li><Link to="/donor/profile" className="hover:underline">PROFILE</Link></li>
                                     <li><Link to="/donor/contacts" className="hover:underline">CONTACTS</Link></li>
-                                    <li><Link to="/donor/donors" className="font-bold hover:underline"> BLOOD DONATE</Link></li>
+                                    <li><Link to="/donor/donors" className="hover:underline"> BLOOD DONATE</Link></li>
                                     <li><Link to="/donor/blood-basics" className="hover:underline">BLOOD BASICS</Link></li>
                                     <li><Link to="/history" className="hover:underline">HISTORY</Link></li>
                                 </>
