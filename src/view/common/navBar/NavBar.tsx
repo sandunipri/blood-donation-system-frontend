@@ -24,19 +24,26 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
 
 
     return (
-        <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
+        <div className="font-sans fixed top-0 left-0 w-full z-50 bg-white shadow-md">
             <div className="p-2 font-sans flex justify-between items-center shadow-md">
-                <div className="flex items-center  ">
-                    <div>
-                        <img src="/src/assets/images/navbar/img.png" alt="Logo"
-                             className="h-20 w-20 object-contain rounded-full"/>
+                <div className="flex items-center space-x-4">
+                    <div className="p-1 bg-red-100 rounded-full shadow-md">
+                        <img
+                            src="/src/assets/images/navbar/img.png"
+                            alt="RedPulse Logo"
+                            className="h-20 w-20 object-cover rounded-full border-4 border-white"
+                        />
                     </div>
                     <div>
-                        <h1 className="text-xl md:text-2xl font-bold text-black-800 leading-tight">
-                            Blood Banking & Donation in Sri Lanka
+                        <h1 className="font-roboto text-3xl md:text-4xl font-extrabold text-red-700 drop-shadow-sm">
+                            RedPulse
                         </h1>
+                        <p className="text-sm text-gray-600 font-medium tracking-wide">
+                            Every heartbeat counts
+                        </p>
                     </div>
                 </div>
+
 
                 <div className="flex items-center space-x-4 text-gray-800">
                     <div>
@@ -109,12 +116,12 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                 <div className="flex space-x-4 text-blue-600">
                     <ul className="flex space-x-4">
 
-                        {location.pathname === "/" && (
+                        {(location.pathname === "/" || location.pathname === "/contact") &&(
                             <>
                                 <li>
                                     <button
                                         onClick={() => scrollToHome?.()}
-                                        className="text-gray-800 hover:underline hover:text-red-700 font-medium text-lg transition bg-transparent"
+                                        className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent"
                                     >
                                         Home
                                     </button>
@@ -123,10 +130,15 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                                 <li>
                                     <button
                                         onClick={scrollToAbout}
-                                        className="text-gray-800 hover:underline hover:text-red-700 font-medium text-lg transition bg-transparent"
+                                        className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent"
                                     >
                                         About
                                     </button>
+                                </li>
+                                <li>
+                                    <Link to="/contact" className="text-gray-800 hover:text-red-700 font-medium text-lg transition bg-transparent">
+                                        Contact
+                                    </Link>
                                 </li>
                             </>
                         )

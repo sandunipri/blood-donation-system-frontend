@@ -7,11 +7,13 @@ import {RequestBlood} from "../../pages/request/RequestBlood.tsx";
 import {Notification} from "../../pages/notification/Notification.tsx";
 import {MedicalHistory} from "../../pages/history/MedicalHistory.tsx";
 import {Patient} from "../../pages/patient/Patient.tsx";
+import {Contact} from "../../pages/contact/Contact.tsx";
 
 export function MainContent() {
     return (
         <Routes>
             <Route path="/" element={<Home/>}></Route>
+            <Route path="/contact" element={<Contact/>}></Route>
             <Route path="/donor-manage" element={<DonorManage/>}></Route>
             <Route path="/admin" element={<Admin/>}></Route>
             <Route path="/hospital" element={<Hospital/>}></Route>
