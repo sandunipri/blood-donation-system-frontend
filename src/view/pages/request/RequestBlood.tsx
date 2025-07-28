@@ -30,7 +30,7 @@ export function RequestBlood() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md"
+            className="max-w-xl mt-50  mx-auto p-6 bg-white rounded-xl shadow-md"
         >
             <h2 className="text-xl font-bold mb-4">Blood Request Form</h2>
 

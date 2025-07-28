@@ -6,21 +6,10 @@ import {useForm} from "react-hook-form";
 import type {AdminData} from "../../../model/AdminData.ts";
 import { useNavigate } from "react-router-dom";
 import {registerAdmin} from "../../../slices/AdminSlice.ts";
+import {getBloodStockOneByOne} from "../../../slices/BloodStockSlice.ts";
 
 
 export function Admin() {
-
-    const bloodStock = [
-        { type: "A+", units: 42 },
-        { type: "A−", units: 21 },
-        { type: "B+", units: 36 },
-        { type: "B−", units: 12 },
-        { type: "AB+", units: 18 },
-        { type: "AB−", units: 5 },
-        { type: "O+", units: 58 },
-        { type: "O−", units: 9 },
-    ];
-
     const [time, setTime] = useState(() => new Date());
     useEffect(() => {
         const id = setInterval(() => {
@@ -46,6 +35,17 @@ export function Admin() {
         setShowModal(false);
         navigate("/admin");
     }
+
+    /*load blood stocks*/
+
+
+    const bloodStock = useSelector((state: RootState) => state.bloodStock.list);
+
+    useEffect(() => {
+        dispatch(getBloodStockOneByOne());
+    }, [dispatch]);
+
+
 
     return (
         <>
@@ -126,18 +126,19 @@ export function Admin() {
                         <div className="p-6">
                             <h1 className="text-2xl font-bold text-red-800 mb-6">Blood Inventory</h1>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {bloodStock.map((item) => (
+                                {bloodStock.map(item => (
                                     <div
-                                        key={item.type}
+                                        key={item.bloodGroup ?? Math.random().toString()}
                                         className="bg-white shadow rounded-lg p-4 text-center border border-red-100"
                                     >
-                                        <h2 className="text-xl font-semibold text-gray-700">{item.type}</h2>
+                                        <h2 className="text-xl font-semibold text-gray-700">{item.bloodGroup}</h2>
                                         <p className="text-3xl font-bold text-red-600 mt-2">{item.units}</p>
                                         <p className="text-sm text-gray-500">units available</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
+
 
                     </div>
 

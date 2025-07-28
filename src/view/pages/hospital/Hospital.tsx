@@ -10,7 +10,7 @@ export function Hospital() {
 
     const {handleSubmit, register, control , reset} = useForm<HospitalData>({
         defaultValues:{
-            bloodStock:[{bloodType: "" , quantity:0}]
+            bloodStock:[{bloodGroup: '', units:0}]
         }
     });
 
@@ -71,7 +71,7 @@ export function Hospital() {
                                 <td className="px-4 py-2 border">{hospital.contact}</td>
                                 <td className="px-4 py-2 border">
                                     {hospital.bloodStock?.map((stock, i) => (
-                                        <div key={i}>{stock.bloodType}: {stock.quantity}</div>
+                                        <div key={i}>{stock.bloodGroup}: {stock.units}</div>
                                     ))}
                                 </td>
                                 <td className="px-4 py-2 border">
@@ -130,7 +130,7 @@ export function Hospital() {
                                 {fields.map((field, index) => (
                                     <div key={field.id}  className="flex items-center space-x-2 mb-2">
                                         <select
-                                            {...register(`bloodStock.${index}.bloodType`)}
+                                            {...register(`bloodStock.${index}.bloodGroup`)}
                                             className="border border-gray-300 rounded px-2 py-1 w-32"
                                         >
                                             <option value="">Select Type</option>
@@ -144,7 +144,7 @@ export function Hospital() {
                                             <option value="O-">O-</option>
                                         </select>
                                         <input
-                                            {...register(`bloodStock.${index}.quantity`, { valueAsNumber: true })}                                            type="number"
+                                            {...register(`bloodStock.${index}.units`, { valueAsNumber: true })}                                            type="number"
                                             min={0}
                                             placeholder="Quantity"
                                             className="border border-gray-300 rounded px-2 py-1 w-24"
@@ -162,7 +162,7 @@ export function Hospital() {
 
                                 <button
                                     type="button"
-                                    onClick={() => append({bloodType: "", quantity : 0})}
+                                    onClick={() => append({bloodGroup: '', units : 0})}
                                     className="text-sm text-blue-600 hover:underline mt-1"
                                 >
                                     + Add Blood Type
