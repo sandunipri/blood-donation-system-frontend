@@ -8,6 +8,7 @@ import {Notification} from "../../pages/notification/Notification.tsx";
 import {MedicalHistory} from "../../pages/history/MedicalHistory.tsx";
 import {Patient} from "../../pages/patient/Patient.tsx";
 import {Contact} from "../../pages/contact/Contact.tsx";
+import {BloodBasic} from "../../pages/basic/BloodBasic.tsx";
 
 export function MainContent() {
     return (
@@ -22,6 +23,7 @@ export function MainContent() {
             <Route path="/history" element={<MedicalHistory/>}></Route>
             <Route path="/donors" element={<DonorManage/>}></Route>
             <Route path="/patient" element={<Patient/>}></Route>
+            <Route path="/blood-basic" element={<BloodBasic/>}></Route>
         </Routes>
     );
 }

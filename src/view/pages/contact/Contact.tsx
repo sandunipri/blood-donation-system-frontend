@@ -1,4 +1,3 @@
-import {Link} from "react-router-dom";
 import bgImg from "../../../assets/images/home/360_F_137309034_4oK5BoYqUc7sUoNor1ltGW0PAYNzExK9.jpg";
 
 export function Contact() {
@@ -66,10 +65,11 @@ export function Contact() {
                         Send Message
                     </button>
                     <button
+                        onClick={() => window.history.back()}
                         type="submit"
                         className="bg-black hover:bg-red-800 text-white font-semibold px-6 py-2 rounded-md transition"
                     >
-                        <Link to="/">Back to Home</Link>
+                        Back to Home
 
                     </button>
 

@@ -27,7 +27,7 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
         <div className="font-sans fixed top-0 left-0 w-full z-50 bg-white shadow-md">
             <div
                 className="p-4 font-sans flex justify-between items-center shadow-md bg-cover bg-center"
-                style={{ backgroundImage: "url('')" }}
+                style={{backgroundImage: "url('')"}}
             >
                 {/*set bg-image for the nave bar size*/}
 
@@ -121,7 +121,7 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                 <div className="flex space-x-4 text-blue-600">
                     <ul className="flex space-x-4">
 
-                        {(location.pathname === "/" || location.pathname === "/contact") &&(
+                        {(location.pathname === "/") && (
                             <>
                                 <li>
                                     <button
@@ -141,7 +141,8 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                                     </button>
                                 </li>
                                 <li>
-                                    <Link to="/contact" className="text-gray-800 hover:text-red-700 font-medium text-lg transition bg-transparent">
+                                    <Link to="/contact"
+                                          className="text-gray-800 hover:text-red-700 font-medium text-lg transition bg-transparent">
                                         Contact
                                     </Link>
                                 </li>
@@ -152,12 +153,21 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                         {
                             role === "admin" && (
                                 <>
-                                    <li><Link to="/donors" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">DONORS</Link></li>
-                                    <li><Link to="/hospital" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">HOSPITALS</Link></li>
-                                    <li><Link to="/patient" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PATIENTS</Link>
+                                    <li><Link to="/donors"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">DONORS</Link>
                                     </li>
-                                    <li><Link to="/notification" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">NOTIFICATIONS</Link></li>
-                                    <li><Link to="/admin" className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PROFILE</Link></li>
+                                    <li><Link to="/hospital"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">HOSPITALS</Link>
+                                    </li>
+                                    <li><Link to="/patient"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PATIENTS</Link>
+                                    </li>
+                                    <li><Link to="/notification"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">NOTIFICATIONS</Link>
+                                    </li>
+                                    <li><Link to="/admin"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PROFILE</Link>
+                                    </li>
 
                                 </>
                             )
@@ -165,22 +175,39 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                         {
                             role === "donor" && (
                                 <>
-                                    <li><Link to="/donor/profile" className="hover:underline">PROFILE</Link></li>
-                                    <li><Link to="/donor/contacts" className="hover:underline">CONTACTS</Link></li>
-                                    <li><Link to="/donor/donors" className="hover:underline"> BLOOD DONATE</Link></li>
-                                    <li><Link to="/donor/blood-basics" className="hover:underline">BLOOD BASICS</Link></li>
-                                    <li><Link to="/history" className="hover:underline">HISTORY</Link></li>
+                                    <li><Link to="/donor/profile"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PROFILE</Link>
+                                    </li>
+                                    <li><Link to="/contact"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">CONTACTS</Link>
+                                    </li>
+                                    <li><Link to="/donor/donors"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent"> BLOOD
+                                        DONATE</Link></li>
+                                    <li><Link to="/blood-basic"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">BLOOD
+                                        BASICS</Link></li>
+                                    <li><Link to="/history"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">HISTORY</Link>
+                                    </li>
                                 </>
                             )
                         }
                         {
                             role === "recipient" && (
                                 <>
-                                    <li><Link to="/recipient/about" className="hover:underline">ABOUT</Link></li>
-                                    <li><Link to="/recipient/contacts" className="hover:underline">CONTACTS</Link></li>
-                                    <li><Link to="/request" className="hover:underline">REQUEST</Link></li>
-                                    <li><Link to="/recipient/blood-basics" className="hover:underline">BLOOD BASICS</Link>
+                                    <li><Link to="/recipient/about"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">ABOUT</Link>
                                     </li>
+                                    <li><Link to="/contact"
+                                              className="hover:underlinetext-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">CONTACTS</Link>
+                                    </li>
+                                    <li><Link to="/request"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">REQUEST</Link>
+                                    </li>
+                                    <li><Link to="/blood-basic"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">BLOOD
+                                        BASICS</Link></li>
                                     <li><Link to="/recipient/blood-bank" className="hover:underline">BLOOD BANKING AND
                                         DONATION</Link></li>
                                 </>
