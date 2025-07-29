@@ -19,7 +19,7 @@ const initialState: userState = {
 
 export const registerUser = createAsyncThunk(
     'auth/register',
-    async (data: UserData, {rejectWithValue}) => {
+    async (data: UserData) => {
         try {
             console.log("Registering user with data:", data);
             const response = await backendApi.post("/auth/register", data);
@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk(
             return response.data;
         } catch (err: any) {
             console.error("Registration failed:", err.response?.data);
-            return rejectWithValue(err.response?.data?.error || "Registration failed");
+            alert("Registration failed: " + (err.response?.data?.error || "Unknown error"));
         }
     }
 )
@@ -67,6 +67,37 @@ export const getUserProfile = createAsyncThunk(
         return response.data;
     }
 )
+
+export const updateUser = createAsyncThunk(
+    'user/update/:email',
+    async (data: UserData) => {
+        try {
+            console.log("Updating user with data:", data);
+            const response = await backendApi.post(`/user/update/${data.email}`, data);
+            console.log("Update response:", response.data);
+            return response.data;
+        } catch (err: any) {
+            console.error("Update failed:", err.response?.data);
+            alert("Update failed: " + (err.response?.data?.error || "Unknown error"));
+        }
+    }
+)
+
+export const deleteUser = createAsyncThunk(
+    'user/delete/:email',
+    async (email: string) => {
+        try {
+            console.log("Deleting user with email:", email);
+            const response = await backendApi.delete(`/user/delete/${email}`);
+            console.log("Delete response:", response.data);
+            return response.data;
+        } catch (err: any) {
+            console.error("Delete failed:", err.response?.data);
+            alert("Delete failed: " + (err.response?.data?.error || "Unknown error"));
+        }
+    }
+)
+
 /*const userSlice = createSlice({
     name : 'auth',
     initialState : initialState,
@@ -133,6 +164,32 @@ const userSlice = createSlice({
             })
             .addCase(getUserProfile.rejected, (state, action) => {
                 console.error("Error fetching user profile:", action.error);
+                state.error = action.error.message;
+            })
+            .addCase(updateUser.pending, (state) => {
+                console.log("Updating user...");
+                state.error = null;
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                console.log("User updated successfully:", action.payload);
+                state.profile = action.payload.user;
+            })
+
+            .addCase(updateUser.rejected, (state, action) => {
+                console.error("Error updating user:", action.error);
+                state.error = action.error.message;
+            })
+            .addCase(deleteUser.pending, (state, action) => {
+                console.log("Deleting user with email:", action.meta.arg);
+                state.error = null;
+            })
+            .addCase(deleteUser.fulfilled, (state, action) => {
+                console.log("User deleted successfully:", action.payload);
+                state.list = state.list.filter(user => user.email !== action.meta.arg);
+                state.error = null;
+            })
+            .addCase(deleteUser.rejected, (state, action) => {
+                console.error("Error deleting user:", action.error);
                 state.error = action.error.message;
             });
 

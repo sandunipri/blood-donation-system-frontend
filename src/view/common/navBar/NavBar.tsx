@@ -187,10 +187,6 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                                     <li><Link to="/history"
                                               className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">HISTORY</Link>
                                     </li>
-                                    <li><Link to="/about"
-                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">ABOUT</Link>
-                                    </li>
-
                                 </>
                             )
                         }
