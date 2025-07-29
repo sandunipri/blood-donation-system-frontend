@@ -4,7 +4,6 @@ import {useNavigate} from "react-router-dom";
 import type {BloodRequestData} from "../../../model/BloodRequestData.ts";
 import {sendBloodRequest} from "../../../slices/BloodRequestSlice.ts";
 import type {AppDispatch, RootState} from "../../../store/Store.ts";
-import Swal from "sweetalert2";
 import {useEffect} from "react";
 import {getAllHospitals} from "../../../slices/HospitalSlice.ts";
 
@@ -21,10 +20,14 @@ export function RequestBlood() {
     const onSubmit = (data: BloodRequestData) => {
         dispatch(sendBloodRequest(data)).then((result) => {
             if (sendBloodRequest.fulfilled.match(result)) {
-                Swal.fire("Success", "Blood request sent successfully", "success");
+                alert("Blood request sent successfully!");
                 navigate("/recipient");
             } else {
-                Swal.fire("Error", "Blood request failed", "error");
+                alert("Failed to send blood request. Please try again.");
+                // Optionally log the error for debugging
+
+
+                console.error(result.error.message);
             }
         });
     };

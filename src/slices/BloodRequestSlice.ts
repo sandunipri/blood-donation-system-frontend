@@ -68,7 +68,7 @@ const bloodRequestSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-           /* .addCase(sendBloodRequest.pending, (state) => {
+            .addCase(sendBloodRequest.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
@@ -80,7 +80,7 @@ const bloodRequestSlice = createSlice({
             .addCase(sendBloodRequest.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
-            })*/
+            })
             .addCase(getAllRequestCount.pending, (state) => {
                 state.loading = true;
                 state.error = null;
