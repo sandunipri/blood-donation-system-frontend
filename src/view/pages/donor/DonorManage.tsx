@@ -2,16 +2,18 @@ import {FaTint, FaPhoneAlt, FaEnvelope} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import type {AppDispatch, RootState} from "../../../store/Store.ts";
 import {useEffect, useState} from "react";
-import {getAllDonors} from "../../../slices/UserSlice.ts";
+import {deleteUser, getAllDonors} from "../../../slices/UserSlice.ts";
 import {getDonationRecordByEmail, saveDonationRecord} from "../../../slices/DonationSlice.ts";
 import type {DonationData} from "../../../model/DonationData.ts";
 import {useForm} from "react-hook-form";
 import {getAllHospitals} from "../../../slices/HospitalSlice.ts";
 
+
 export function DonorManage() {
     const dispatch = useDispatch<AppDispatch>();
     /*get donor list*/
     const donors = useSelector((state: RootState) => state.user.list);
+
 
 
     /*get donor record*/
@@ -59,6 +61,13 @@ export function DonorManage() {
         dispatch(getAllHospitals());
     }, [dispatch]);
 
+    /*delete user*/
+    const handleDeleteDonor = (email: string) => {
+        if (confirm("Are you sure you want to delete this donor?")) {
+            dispatch(deleteUser(email));
+        }
+    };
+
 
     return (
         <div className="max-w-4xl mx-auto p-6 mt-40 rounded-2xl bg-white shadow-xl border border-gray-200">
@@ -89,15 +98,18 @@ export function DonorManage() {
 
                         {/* Buttons */}
                         <div className="flex gap-3 mt-4 md:mt-0">
-                            <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                            <button className="px-4 py-2 bg-red-800 text-white rounded hover:bg-blue-700 transition">
                                 Update
                             </button>
-                            <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                            <button
+                                onClick={() => handleDeleteDonor(donor.email)}
+                                className="px-4 py-2 bg-red-800 text-white rounded hover:bg-red-700 transition"
+                            >
                                 Delete
                             </button>
                             <button
                                 onClick={() => viewDonationRecord(donor.email)}
-                                className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
+                                className="px-4 py-2 bg-red-800 text-white rounded hover:bg-yellow-600 transition">
                                 View Record
                             </button>
                             <button
@@ -105,7 +117,7 @@ export function DonorManage() {
                                     setSelectedDonateDonor(donor);
                                     setShowDonateModal(true);
                                 }}
-                                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                                className="px-4 py-2 bg-red-800 text-white rounded hover:bg-green-700 transition">
                                 Donate
                             </button>
                         </div>
