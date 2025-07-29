@@ -17,14 +17,20 @@ export function Notification() {
     const reversedNotification= [...notification].reverse();
 
 
-    const handleConfirm = (email: string) => {
+    const handleConfirm = (email: string, index :number) => {
         dispatch(confirmNotification(email))
         console.log("Confirmed notification", email);
+
+        reversedNotification[index].isRead = true;
+
     };
 
-    const handleReject = (email: string) => {
+    const handleReject = (email: string, index:number) => {
         dispatch(rejectNotification(email))
         console.log("Rejected notification", email);
+
+        reversedNotification[index].isRead = true;
+
     };
 
     return (
@@ -61,19 +67,30 @@ export function Notification() {
                         {notification.type === "blood-request" && (
                             <div className="mt-3 flex gap-2">
                                 <button
-                                    className="px-4 py-1 rounded bg-green-500 text-white hover:bg-green-600"
-                                    onClick={() => handleConfirm(notification.userEmail!)}
+                                    disabled={notification.isRead}
+                                    className={`px-4 py-1 rounded text-white ${
+                                        notification.isRead
+                                            ? "bg-gray-400 cursor-not-allowed"
+                                            : "bg-green-500 hover:bg-green-600"
+                                    }`}
+                                    onClick={() => handleConfirm(notification.userEmail!, index)}
                                 >
                                     Confirm
                                 </button>
                                 <button
-                                    className="px-4 py-1 rounded bg-red-500 text-white hover:bg-red-600"
-                                    onClick={() => handleReject(notification.userEmail!)}
+                                    disabled={notification.isRead}
+                                    className={`px-4 py-1 rounded text-white ${
+                                        notification.isRead
+                                            ? "bg-gray-400 cursor-not-allowed"
+                                            : "bg-red-500 hover:bg-red-600"
+                                    }`}
+                                    onClick={() => handleReject(notification.userEmail!, index)}
                                 >
                                     Reject
                                 </button>
                             </div>
                         )}
+
                     </div>
                 ))}
             </div>

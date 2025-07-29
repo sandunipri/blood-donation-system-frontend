@@ -128,7 +128,7 @@ export function DonorManage() {
             )}
             {/*model for the record*/}
             <>{showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="fixed inset-0  bg-opacity-70 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-2xl relative">
                         <h3 className="text-2xl font-bold text-red-600 mb-6 border-b pb-2">Donation History</h3>
 
@@ -193,63 +193,82 @@ export function DonorManage() {
             {/*model for the donate*/}
             <>
                 {showDonateModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg relative">
-                            <h3 className="text-2xl font-bold text-green-600 mb-6 border-b pb-2">Make a Donation</h3>
-
-                            <form onSubmit={handleSubmit(onSubmit)}
-                                  className="space-y-4"
-                            >
-                                <select
-                                    {...register("hospitalEmail")}
-                                    required
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                    <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg relative">
+                            {/* Header */}
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="text-2xl font-bold text-green-700">Make a Donation</h3>
+                                <button
+                                    onClick={() => {
+                                        setShowDonateModal(false);
+                                        setSelectedDonateDonor(null);
+                                    }}
+                                    aria-label="Close modal"
+                                    className="text-gray-500 hover:text-gray-700 text-2xl font-bold leading-none"
                                 >
-                                    <option value="">Select a hospital</option>
-                                    {hospitals && hospitals.map((hospital, index) => (
-                                        <option key={index} value={hospital.email}>
-                                            {hospital.name} ({hospital.email})
-                                        </option>
-                                    ))}
-                                </select>
+                                    ×
+                                </button>
+                            </div>
 
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Units to Donate</label>
+                                    <label className="block text-lg font-medium text-gray-700 mb-1">
+                                        Select a Hospital
+                                    </label>
+                                    <select
+                                        {...register("hospitalEmail")}
+                                        required
+                                        className="w-full h-10 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                                    >
+                                        <option value="">-- Choose Hospital --</option>
+                                        {hospitals &&
+                                            hospitals.map((hospital, index) => (
+                                                <option key={index} value={hospital.email}>
+                                                    {hospital.name} ({hospital.email})
+                                                </option>
+                                            ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-lg font-medium text-gray-700 mb-1">
+                                        Units to Donate
+                                    </label>
                                     <input
                                         {...register("unitsDonated")}
                                         type="number"
                                         min="1"
                                         required
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        className="w-full h-10 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                                     />
                                 </div>
-
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Date</label>
+                                    <label className="block text-lg font-medium text-gray-700 mb-1">
+                                        Donation Date
+                                    </label>
                                     <input
                                         {...register("donationDate")}
                                         type="date"
                                         required
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        className="w-full h-10 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-3 pt-4">
+                                {/* Action Buttons */}
+                                <div className="flex justify-end gap-3 pt-4 border-t">
                                     <button
                                         type="button"
                                         onClick={() => {
                                             setShowDonateModal(false);
                                             setSelectedDonateDonor(null);
                                         }}
-                                        className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition"
+                                        className="px-5 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition"
                                     >
                                         Cancel
                                     </button>
                                     <button
-
                                         type="submit"
-                                        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                                        className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-green-700 transition"
                                     >
                                         Submit
                                     </button>
@@ -257,6 +276,7 @@ export function DonorManage() {
                             </form>
                         </div>
                     </div>
+
                 )}
 
             </>
