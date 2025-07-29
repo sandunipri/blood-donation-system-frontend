@@ -67,18 +67,16 @@ export const getUserProfile = createAsyncThunk(
         return response.data;
     }
 )
-
+export type UpdateUserData = Partial<UserData> & { email: string };
 export const updateUser = createAsyncThunk(
     'user/update/:email',
-    async (data: UserData) => {
+    async (data: UpdateUserData) => {
         try {
             console.log("Updating user with data:", data);
             const response = await backendApi.post(`/user/update/${data.email}`, data);
-            console.log("Update response:", response.data);
             return response.data;
         } catch (err: any) {
-            console.error("Update failed:", err.response?.data);
-            alert("Update failed: " + (err.response?.data?.error || "Unknown error"));
+            throw err.response?.data || { error: "Unknown error" };
         }
     }
 )
@@ -98,23 +96,6 @@ export const deleteUser = createAsyncThunk(
     }
 )
 
-/*const userSlice = createSlice({
-    name : 'auth',
-    initialState : initialState,
-    reducers : {},
-    extraReducers : (builder) => {
-        builder.addCase(registerUser.pending, () => {
-            alert("Registering user, please wait...");
-            })
-        builder.addCase(registerUser.fulfilled, (state, action) => {
-            state.list = action.payload
-            state.error = null;
-        });
-        builder.addCase(registerUser.rejected, (state, action) => {
-            state.error = action.payload as string;
-        });
-    }
-})*/
 
 const userSlice = createSlice({
     name: 'user',

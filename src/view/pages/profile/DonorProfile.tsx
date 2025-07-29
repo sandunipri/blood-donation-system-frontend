@@ -1,8 +1,8 @@
 import { FaUser, FaAddressBook, FaCopy } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/Store";
-import {useEffect} from "react";
-import {deleteUser, getUserProfile} from "../../../slices/UserSlice";
+import {useEffect, useState} from "react";
+import {deleteUser, getUserProfile, updateUser} from "../../../slices/UserSlice";
 import {useNavigate} from "react-router-dom";
 
 export default function ProfilePage() {
@@ -20,7 +20,13 @@ export default function ProfilePage() {
     };
 
     /*user update*/
-
+    const [formData, setFormData] = useState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        phone: "",
+        address: "",
+    });
 
     /*user delete*/
     const handleDelete = () => {
@@ -28,6 +34,38 @@ export default function ProfilePage() {
             dispatch(deleteUser(userProfile.email));
             navigate("/")
         }
+    };
+    useEffect(() => {
+        if (userProfile) {
+            setFormData({
+                firstname: userProfile.firstname || "",
+                lastname: userProfile.lastname || "",
+                email: userProfile.email || "",
+                phone: userProfile.phone || "",
+                address: userProfile.address || "",
+            });
+        }
+    }, [userProfile]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value
+        });
+    };
+
+    const handleUpdate = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        dispatch(updateUser(formData))
+            .unwrap()
+            .then(() => {
+                alert("Profile updated successfully!");
+                dispatch(getUserProfile());
+            })
+            .catch(() => {
+                alert("Update failed!");
+            });
     };
 
     return (
@@ -129,63 +167,58 @@ export default function ProfilePage() {
                 {/* Right side - Update Form */}
                 <div className="w-96 bg-white rounded-xl shadow-xl p-8 sticky top-40 h-fit">
                     <h2 className="text-2xl font-bold mb-6 text-center">Update Profile</h2>
-                    <form className="space-y-4">
+                    <form className="space-y-4" onSubmit={handleUpdate}>
                         <div>
-                            <label htmlFor="firstname" className="block mb-1 font-medium text-gray-700">
-                                First Name
-                            </label>
+                            <label htmlFor="firstname" className="block mb-1 font-medium text-gray-700">First Name</label>
                             <input
                                 type="text"
                                 id="firstname"
-                                defaultValue={userProfile?.firstname || ""}
+                                value={formData.firstname}
+                                onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="lastname" className="block mb-1 font-medium text-gray-700">
-                                Last Name
-                            </label>
+                            <label htmlFor="lastname" className="block mb-1 font-medium text-gray-700">Last Name</label>
                             <input
                                 type="text"
                                 id="lastname"
-                                defaultValue={userProfile?.lastname || ""}
+                                value={formData.lastname}
+                                onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="email" className="block mb-1 font-medium text-gray-700">
-                                Email
-                            </label>
+                            <label htmlFor="email" className="block mb-1 font-medium text-gray-700">Email</label>
                             <input
                                 type="email"
                                 id="email"
-                                defaultValue={userProfile?.email || ""}
+                                value={formData.email}
+                                onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="phone" className="block mb-1 font-medium text-gray-700">
-                                Phone
-                            </label>
+                            <label htmlFor="phone" className="block mb-1 font-medium text-gray-700">Phone</label>
                             <input
                                 type="tel"
                                 id="phone"
-                                defaultValue={userProfile?.phone || ""}
+                                value={formData.phone}
+                                onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="address" className="block mb-1 font-medium text-gray-700">
-                                Address
-                            </label>
+                            <label htmlFor="address" className="block mb-1 font-medium text-gray-700">Address</label>
                             <input
                                 type="text"
                                 id="address"
-                                defaultValue={userProfile?.address || ""}
+                                value={formData.address}
+                                onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
