@@ -6,12 +6,14 @@ import {backendApi} from "../api.ts";
 interface userState {
     list: UserData[]
     error: string | null | undefined
+    profile: UserData | null;
     count: number;
 }
 
 const initialState: userState = {
     list: [],
     error: null,
+    profile: null,
     count: 0,
 }
 
@@ -57,6 +59,14 @@ export const getUserCount = createAsyncThunk(
     }
 )
 
+export const getUserProfile = createAsyncThunk(
+    '/user/getProfile',
+    async () => {
+        const response = await backendApi.get('/user/getProfile');
+        console.log("Response from getUserProfile:", response.data);
+        return response.data;
+    }
+)
 /*const userSlice = createSlice({
     name : 'auth',
     initialState : initialState,
@@ -115,7 +125,17 @@ const userSlice = createSlice({
             .addCase(getUserCount.rejected, (state, action) => {
                 console.error("Error fetching user count:", action.error);
                 state.error = action.error.message;
+            })
+            .addCase(getUserProfile.fulfilled, (state, action) => {
+                console.log("Fetched user profile:", action.payload);
+                state.profile = action.payload.data;
+                state.error = null;
+            })
+            .addCase(getUserProfile.rejected, (state, action) => {
+                console.error("Error fetching user profile:", action.error);
+                state.error = action.error.message;
             });
+
     }
 });
 

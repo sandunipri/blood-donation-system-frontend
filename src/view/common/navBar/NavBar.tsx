@@ -175,29 +175,30 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                         {
                             role === "donor" && (
                                 <>
-                                    <li><Link to="/donor/profile"
+                                    <li><Link to="/profile"
                                               className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PROFILE</Link>
                                     </li>
                                     <li><Link to="/contact"
                                               className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">CONTACTS</Link>
                                     </li>
-                                    <li><Link to="/donor/donors"
-                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent"> BLOOD
-                                        DONATE</Link></li>
                                     <li><Link to="/blood-basic"
                                               className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">BLOOD
                                         BASICS</Link></li>
                                     <li><Link to="/history"
                                               className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">HISTORY</Link>
                                     </li>
+                                    <li><Link to="/about"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">ABOUT</Link>
+                                    </li>
+
                                 </>
                             )
                         }
                         {
                             role === "recipient" && (
                                 <>
-                                    <li><Link to="/recipient/about"
-                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">ABOUT</Link>
+                                    <li><Link to="/profile"
+                                              className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">PROFILE</Link>
                                     </li>
                                     <li><Link to="/contact"
                                               className="hover:underlinetext-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">CONTACTS</Link>
@@ -208,8 +209,6 @@ export function NavBar({scrollToAbout, scrollToHome}: NavBarProps) {
                                     <li><Link to="/blood-basic"
                                               className="text-gray-800  hover:text-red-700 font-medium text-lg transition bg-transparent">BLOOD
                                         BASICS</Link></li>
-                                    <li><Link to="/recipient/blood-bank" className="hover:underline">BLOOD BANKING AND
-                                        DONATION</Link></li>
                                 </>
                             )
                         }

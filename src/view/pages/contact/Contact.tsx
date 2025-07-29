@@ -14,17 +14,6 @@ export function Contact() {
 
             {/* Instructions section */}
             <div className="md:w-1/2 flex flex-col justify-center px-4">
-             {/*   <h2 className="text-3xl font-bold text-red-700 mb-6">How to Contact Us</h2>
-                <p className="mb-4 text-gray-700">
-                    Please fill out the form on the right with your name, email, and message.
-                    We’ll get back reply to you within 1-2  days.
-                </p>
-                <ul className="list-disc list-inside text-gray-600 space-y-2">
-                    <li>Make sure to provide a valid email address.</li>
-                    <li>Keep your message clear and concise.</li>
-                    <li>We respect your privacy and won’t share your information.</li>
-                    <li>You can also reach us at: <a href="mailto:donationblood414@gmail.com" className="text-red-700 underline">donationblood414@gmail.com</a></li>
-                </ul>*/}
             </div>
 
             {/* Contact form section */}
