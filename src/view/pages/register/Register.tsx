@@ -17,6 +17,7 @@ export function Register() {
     const navigate = useNavigate();
 
     const  onSubmit = (data : UserData) => {
+
         dispatch(registerUser(data));
         console.log("DonorManage registered:", user);
         navigate("/login");
